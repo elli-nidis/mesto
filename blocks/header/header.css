@@ -1,0 +1,30 @@
+.header {
+  width: 100%;
+  max-width: 880px;
+  min-height: 74px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: start;
+  align-items: flex-start;
+  background-color: #000;
+  border-bottom: solid 1px #545454;
+}
+
+@media screen and (max-width: 919px) {
+  .header {
+    max-width: 500px;
+  }
+}
+
+@media screen and (max-width: 544px) {
+  .header {
+    max-width: 320px;
+    min-height: 56px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .header {
+    padding-left: 27px;
+  }
+}
