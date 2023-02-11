@@ -1,0 +1,6 @@
+.profile__edit-group {
+  display: flex;
+  align-items: baseline;
+  column-gap: 16px;
+
+}

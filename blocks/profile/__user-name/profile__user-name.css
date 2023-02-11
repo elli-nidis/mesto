@@ -1,0 +1,30 @@
+.profile__user-name {
+  font-family: 'Inter', 'Arial', sans-serif;
+  font-size: 42px;
+  font-weight: 500;
+  line-height: 1.15;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (max-width: 919px) {
+  .profile__user-name {
+    font-size: 36px;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .profile__user-name {
+    font-size: 32px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .profile__user-name {
+    font-size: 27px;
+    line-height: 1.22;
+    /* padding-left = profile__edit-group column-gap + edit-button width */
+    padding-left: calc(16px + 18px);
+  }
+}
