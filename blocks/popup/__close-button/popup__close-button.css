@@ -5,10 +5,15 @@
   top: -40px;
   right: -40px;
   background-image: url(../../../images/popup-close-button.svg);
-  background-color: #000;
+  background-color: rgba(0, 0, 0, 0);
   background-size: cover;
   cursor: pointer;
+  transition: opacity .5s;
   border: none;
+}
+
+.popup__close-button:hover {
+  opacity: .6;
 }
 
 @media screen and (max-width: 600px) {

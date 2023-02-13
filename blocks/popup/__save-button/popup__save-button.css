@@ -9,7 +9,12 @@
   color: #fff;
   background-color: #000;
   cursor: pointer;
+  transition: opacity .5s;
   margin: 48px 0 0 0;
+}
+
+.popup__save-button:hover {
+  opacity: .8;
 }
 
 @media screen and (max-width: 600px) {
