@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mesto</title>
   <link rel="stylesheet" href="pages/index.css">
+  <script src="./scripts/index.js" defer></script>
 </head>
 <body>
 <!-- ***** page start ***** -->
@@ -24,10 +25,10 @@
       <img src="./images/profile-avatar.jpg" alt="Фото пользователя" class="profile__avatar">
       <div class="profile__info">
         <div class="profile__edit-group">
-          <h1 class="profile__user-name">Жак-Ив Кусто</h1>
+          <h1 class="profile__user-name"></h1>
           <button class="profile__edit-button"></button>
         </div>
-        <p class="profile__user-occupation">Исследователь океана</p>
+        <p class="profile__user-occupation"></p>
       </div>
       <button class="profile__add-button"></button>
     </section>
@@ -96,7 +97,7 @@
   </div>
 <!-- ***** page end ***** -->
 
-<!-- ***** edit-user pop-up start ***** -->
+<!-- ***** user-edit pop-up start ***** -->
 <div class="popup">
   <section class="popup__container">
     <h2 class="popup__title">Редактировать профиль</h2>
@@ -108,6 +109,6 @@
     <button class="popup__close-button"></button>
   </section>
 </div>
-<!-- ***** edit-user pop-up end ***** -->
+<!-- ***** user-edit pop-up end ***** -->
 </body>
 </html>
