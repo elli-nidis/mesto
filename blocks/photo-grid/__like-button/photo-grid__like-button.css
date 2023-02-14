@@ -7,14 +7,11 @@
   background-size: 22px 19px;
   background-repeat: no-repeat;
   border: none;
+  cursor: pointer;
   transition: opacity .5s;
   padding: 0;
 }
 
 .photo-grid__like-button:hover {
   opacity: .5;
-}
-
-.photo-grid__like-button:hover {
-  cursor: pointer;
 }
