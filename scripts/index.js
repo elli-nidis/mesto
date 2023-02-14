@@ -11,6 +11,8 @@ const profileUserName = document.querySelector('.profile__user-name');
 const profileUserOccupation = document.querySelector('.profile__user-occupation');
 const popupUserName = document.querySelector('.popup__user-name');
 const popupUserOccupation = document.querySelector('.popup__user-occupation');
+// нахожу форму
+const popupForm = document.querySelector('.popup__form');
 
 // заполняю значения юзера в профиле
 profileUserName.textContent = userName;
@@ -24,6 +26,8 @@ popupUserOccupation.value = profileUserOccupation.textContent;
 profileEditButton.addEventListener('click', openUserEditPopup);
 popupCloseButton.addEventListener('click', closeUserEditPopup);
 
+popupForm.addEventListener('submit', handlePopupFormSubmit);
+
 // функция открытия попапа
 function openUserEditPopup() {
   userEditPopup.classList.add('popup_opened');
@@ -32,6 +36,17 @@ function openUserEditPopup() {
 // функция закрытия попапа
 function closeUserEditPopup() {
   userEditPopup.classList.remove('popup_opened');
+}
+
+// функция редактирования профиля через попап
+function handlePopupFormSubmit (event) {
+  // отменяю стандартную отправку формы
+  event.preventDefault();
+  // присваиваю новые значения в профиле, тяну из попапа
+  profileUserName.textContent = popupUserName.value;
+  profileUserOccupation.textContent = popupUserOccupation.value;
+  // закрываю попап
+  closeUserEditPopup();
 }
 
 
