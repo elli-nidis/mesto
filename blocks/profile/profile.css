@@ -1,13 +1,14 @@
 .profile {
   width: 100%;
   display: grid;
-  grid-template-columns: 150px auto 150px;
+  grid-template-columns: 120px auto 150px;
+  column-gap: 30px;
   align-items: center;
 }
 
 @media screen and (max-width: 850px) {
   .profile {
-    grid-template-columns: 150px auto;
+    grid-template-columns: 120px auto;
     grid-template-rows: 70px 50px;
   }
 }

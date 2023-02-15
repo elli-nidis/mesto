@@ -1,6 +1,18 @@
 .profile__edit-group {
-  display: flex;
+  display: grid;
+  grid-template-columns: fit-content(570px) 24px;
   align-items: baseline;
   column-gap: 16px;
+}
 
+@media screen and (max-width: 850px) {
+  .profile__edit-group {
+    grid-template-columns: fit-content(385px) 24px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .profile__edit-group {
+    justify-self: center;
+  }
 }

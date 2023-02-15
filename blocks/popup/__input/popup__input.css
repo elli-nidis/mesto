@@ -1,4 +1,4 @@
-.popup__user-occupation {
+.popup__input {
   width: 100%;
   font-family: 'Inter', 'Arial', sans-serif;
   font-size: 14px;
@@ -9,10 +9,9 @@
   border-right: none;
   border-bottom: 1px solid rgba(0 0 0 .2);
   color: #000;
-  margin: 17px 0 0 0;
   padding-bottom: 13px;
 }
 
-.popup__user-occupation:focus {
+.popup__input:focus {
   outline: none;
 }

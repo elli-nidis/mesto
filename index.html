@@ -26,61 +26,71 @@
       <div class="profile__info">
         <div class="profile__edit-group">
           <h1 class="profile__user-name">Жак-Ив Кусто</h1>
-          <button class="profile__edit-button"></button>
+          <button class="profile__edit-button" type="button" aria-label="редактировать"></button>
         </div>
         <p class="profile__user-occupation">Исследователь океана</p>
       </div>
-      <button class="profile__add-button"></button>
+      <button class="profile__add-button" type="button" aria-label="добавить"></button>
     </section>
 <!-- ***** profile end ***** -->
 
 <!-- ***** elements start ***** -->
     <section class="elements">
       <ul class="photo-grid">
-        <li class="photo-grid__item">
-          <figure class="photo-grid__card">
-            <img src="./images/photo-grid-karachaevsk.jpg" alt="Карачаевск" class="photo-grid__img">
-            <figcaption class="photo-grid__caption">
-              <h2 class="photo-grid__title">Карачаево-Черкессия</h2>
-              <button class="photo-grid__like-button"></button>
+        <li class="card">
+          <figure class="card__item">
+            <img src="./images/photo-grid-karachaevsk.jpg" alt="Карачаевск" class="card__img">
+            <figcaption class="card__caption">
+              <h2 class="card__title">Карачаево-Черкессия</h2>
+              <button class="card__like-button" type="button" aria-label="нравится"></button>
             </figcaption>
           </figure>
         </li>
-        <li class="photo-grid__item"><figure class="photo-grid__card">
-            <img src="./images/photo-grid-moscow.jpg" alt="Москва" class="photo-grid__img">
-            <figcaption class="photo-grid__caption">
-              <h2 class="photo-grid__title">Москва</h2>
-              <button class="photo-grid__like-button"></button>
+        <li class="card">
+          <figure class="card__item">
+            <img src="./images/photo-grid-moscow.jpg" alt="Москва" class="card__img">
+            <figcaption class="card__caption">
+              <h2 class="card__title">Москва</h2>
+              <button class="card__like-button" type="button" aria-label="нравится"></button>
             </figcaption>
-          </figure></li>
-        <li class="photo-grid__item"><figure class="photo-grid__card">
-            <img src="./images/photo-grid-elbrus.jpg" alt="Эльбрус" class="photo-grid__img">
-            <figcaption class="photo-grid__caption">
-              <h2 class="photo-grid__title">Эльбрус</h2>
-              <button class="photo-grid__like-button"></button>
+          </figure>
+        </li>
+        <li class="card">
+          <figure class="card__item">
+            <img src="./images/photo-grid-elbrus.jpg" alt="Эльбрус" class="card__img">
+            <figcaption class="card__caption">
+              <h2 class="card__title">Эльбрус</h2>
+              <button class="card__like-button" type="button" aria-label="нравится"></button>
             </figcaption>
-          </figure></li>
-        <li class="photo-grid__item"><figure class="photo-grid__card">
-            <img src="./images/photo-grid-dombai.jpg" alt="Домбай" class="photo-grid__img">
-            <figcaption class="photo-grid__caption">
-              <h2 class="photo-grid__title">Домбай</h2>
-              <button class="photo-grid__like-button"></button>
+          </figure>
+        </li>
+        <li class="card">
+          <figure class="card__item">
+            <img src="./images/photo-grid-dombai.jpg" alt="Домбай" class="card__img">
+            <figcaption class="card__caption">
+              <h2 class="card__title">Домбай</h2>
+              <button class="card__like-button" type="button" aria-label="нравится"></button>
             </figcaption>
-          </figure></li>
-        <li class="photo-grid__item"><figure class="photo-grid__card">
-            <img src="./images/photo-grid-kalyazin.jpg" alt="Калязин" class="photo-grid__img">
-            <figcaption class="photo-grid__caption">
-              <h2 class="photo-grid__title">Калязин</h2>
-              <button class="photo-grid__like-button"></button>
+          </figure>
+        </li>
+        <li class="card">
+          <figure class="card__item">
+            <img src="./images/photo-grid-kalyazin.jpg" alt="Калязин" class="card__img">
+            <figcaption class="card__caption">
+              <h2 class="card__title">Калязин</h2>
+              <button class="card__like-button" type="button" aria-label="нравится"></button>
             </figcaption>
-          </figure></li>
-        <li class="photo-grid__item"><figure class="photo-grid__card">
-            <img src="./images/photo-grid-ural.jpg" alt="Урал" class="photo-grid__img">
-            <figcaption class="photo-grid__caption">
-              <h2 class="photo-grid__title">Урал</h2>
-              <button class="photo-grid__like-button"></button>
+          </figure>
+        </li>
+        <li class="card">
+          <figure class="card__item">
+            <img src="./images/photo-grid-ural.jpg" alt="Урал" class="card__img">
+            <figcaption class="card__caption">
+              <h2 class="card__title">Урал</h2>
+              <button class="card__like-button" type="button" aria-label="нравится"></button>
             </figcaption>
-          </figure></li>
+          </figure>
+        </li>
       </ul>
     </section>
 <!-- ***** elements end ***** -->
@@ -99,15 +109,15 @@
 
 <!-- ***** user-edit pop-up start ***** -->
 <div class="popup">
-  <section class="popup__container">
+  <div class="popup__container">
     <h2 class="popup__title">Редактировать профиль</h2>
-    <form class="popup__form">
-      <input type="text" name="userName" class="popup__user-name" placeholder="Имя">
-      <input type="text" name="userOccupation" class="popup__user-occupation" placeholder="Должность">
-      <button class="popup__save-button">Сохранить</button>
+    <form class="popup__form" name="edit-popup">
+      <input type="text" name="userName" class="popup__input popup__input_user_name" placeholder="Имя">
+      <input type="text" name="userOccupation" class="popup__input popup__input_user_occupation" placeholder="Должность">
+      <button class="popup__save-button" type="submit" aria-label="сохранить">Сохранить</button>
     </form>
-    <button class="popup__close-button"></button>
-  </section>
+    <button class="popup__close-button" type="button" aria-label="закрыть"></button>
+  </div>
 </div>
 <!-- ***** user-edit pop-up end ***** -->
 </body>

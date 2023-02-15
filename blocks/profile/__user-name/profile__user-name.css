@@ -4,6 +4,9 @@
   font-weight: 500;
   line-height: 1.15;
   color: #fff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   margin: 0;
   padding: 0;
 }
@@ -24,7 +27,8 @@
   .profile__user-name {
     font-size: 27px;
     line-height: 1.22;
+    text-align: center;
     /* padding-left = profile__edit-group column-gap + edit-button width */
-    padding-left: calc(16px + 18px);
+    /* padding-left: calc(16px + 18px); */
   }
 }
