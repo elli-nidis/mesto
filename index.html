@@ -26,20 +26,20 @@
       <div class="profile__info">
         <div class="profile__edit-group">
           <h1 class="profile__user-name">Жак-Ив Кусто</h1>
-          <button class="profile__edit-button" type="button" aria-label="редактировать"></button>
+          <button class="profile__edit-button open-button" type="button" aria-label="редактировать"></button>
         </div>
         <p class="profile__user-occupation">Исследователь океана</p>
       </div>
-      <button class="profile__add-button" type="button" aria-label="добавить"></button>
+      <button class="profile__add-button open-button" type="button" aria-label="добавить"></button>
     </section>
 <!-- ***** profile end ***** -->
 
 <!-- ***** elements start ***** -->
     <section class="elements">
       <ul class="photo-grid">
-        <li class="card">
+        <!-- <li class="card">
           <figure class="card__item">
-            <img src="./images/photo-grid-karachaevsk.jpg" alt="Карачаевск" class="card__img">
+            <img src="./images/photo-grid-karachaevsk.jpg" alt="Карачаевск" class="card__img open-button">
             <figcaption class="card__caption">
               <h2 class="card__title">Карачаево-Черкессия</h2>
               <button class="card__like-button" type="button" aria-label="нравится"></button>
@@ -48,7 +48,7 @@
         </li>
         <li class="card">
           <figure class="card__item">
-            <img src="./images/photo-grid-moscow.jpg" alt="Москва" class="card__img">
+            <img src="./images/photo-grid-moscow.jpg" alt="Москва" class="card__img open-button">
             <figcaption class="card__caption">
               <h2 class="card__title">Москва</h2>
               <button class="card__like-button" type="button" aria-label="нравится"></button>
@@ -57,7 +57,7 @@
         </li>
         <li class="card">
           <figure class="card__item">
-            <img src="./images/photo-grid-elbrus.jpg" alt="Эльбрус" class="card__img">
+            <img src="./images/photo-grid-elbrus.jpg" alt="Эльбрус" class="card__img open-button">
             <figcaption class="card__caption">
               <h2 class="card__title">Эльбрус</h2>
               <button class="card__like-button" type="button" aria-label="нравится"></button>
@@ -66,7 +66,7 @@
         </li>
         <li class="card">
           <figure class="card__item">
-            <img src="./images/photo-grid-dombai.jpg" alt="Домбай" class="card__img">
+            <img src="./images/photo-grid-dombai.jpg" alt="Домбай" class="card__img open-button">
             <figcaption class="card__caption">
               <h2 class="card__title">Домбай</h2>
               <button class="card__like-button" type="button" aria-label="нравится"></button>
@@ -75,7 +75,7 @@
         </li>
         <li class="card">
           <figure class="card__item">
-            <img src="./images/photo-grid-kalyazin.jpg" alt="Калязин" class="card__img">
+            <img src="./images/photo-grid-kalyazin.jpg" alt="Калязин" class="card__img open-button">
             <figcaption class="card__caption">
               <h2 class="card__title">Калязин</h2>
               <button class="card__like-button" type="button" aria-label="нравится"></button>
@@ -84,13 +84,13 @@
         </li>
         <li class="card">
           <figure class="card__item">
-            <img src="./images/photo-grid-ural.jpg" alt="Урал" class="card__img">
+            <img src="./images/photo-grid-ural.jpg" alt="Урал" class="card__img open-button">
             <figcaption class="card__caption">
               <h2 class="card__title">Урал</h2>
               <button class="card__like-button" type="button" aria-label="нравится"></button>
             </figcaption>
           </figure>
-        </li>
+        </li> -->
       </ul>
     </section>
 <!-- ***** elements end ***** -->
@@ -107,8 +107,22 @@
   </div>
 <!-- ***** page end ***** -->
 
+<!-- ***** template-card start ***** -->
+<template class="template-card">
+  <li class="card">
+    <figure class="card__item">
+      <img class="card__img open-button">
+      <figcaption class="card__caption">
+        <h2 class="card__title"></h2>
+        <button class="card__like-button" type="button"></button>
+      </figcaption>
+    </figure>
+  </li>
+</template>
+<!-- ***** template-card end ***** -->
+
 <!-- ***** user-edit pop-up start ***** -->
-<div class="popup">
+<div class="popup popup_type_edit-profile popup_bground_half-dark">
   <div class="popup__container">
     <h2 class="popup__title">Редактировать профиль</h2>
     <form class="popup__form" name="edit-popup">
@@ -116,9 +130,38 @@
       <input type="text" name="userOccupation" class="popup__input popup__input_user_occupation" placeholder="Должность">
       <button class="popup__save-button" type="submit" aria-label="сохранить">Сохранить</button>
     </form>
-    <button class="popup__close-button" type="button" aria-label="закрыть"></button>
+    <button class="popup__close-button close-button" type="button" aria-label="закрыть"></button>
   </div>
 </div>
 <!-- ***** user-edit pop-up end ***** -->
+
+<!-- ***** add-photo pop-up start ***** -->
+<div class="popup popup_type_add-photo popup_bground_half-dark">
+  <div class="popup__container">
+    <h2 class="popup__title">Новое место</h2>
+    <form class="popup__form" name="add-popup">
+      <input type="text" name="photoName" class="popup__input popup__input_photo_name" placeholder="Название">
+      <input type="text" name="photoLink" class="popup__input popup__input_photo_link" placeholder="Ссылка на картинку">
+      <button class="popup__save-button" type="submit" aria-label="создать">Создать</button>
+    </form>
+    <button class="popup__close-button close-button" type="button" aria-label="закрыть"></button>
+  </div>
+</div>
+<!-- ***** add-photo pop-up end ***** -->
+
+<!-- ***** photo-zoom pop-up start ***** -->
+<div class="popup popup_type_photo-zoom popup_bground_dark">
+  <div class="photo">
+    <figure class="photo__container">
+      <img src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg" alt="Калязин" class="photo__img">
+      <figcaption class="photo__caption">
+        <h2 class="photo__title">Калязин</h2>
+      </figcaption>
+    </figure>
+    <button class="popup__close-button close-button" type="button" aria-label="закрыть"></button>
+  </div>
+</div>
+<!-- ***** photo-zoom pop-up end ***** -->
+
 </body>
 </html>
