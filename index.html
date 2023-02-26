@@ -126,8 +126,8 @@
   <div class="popup__container">
     <h2 class="popup__title">Редактировать профиль</h2>
     <form class="popup__form" name="edit-popup">
-      <input type="text" name="userName" class="popup__input popup__input_user_name" placeholder="Имя">
-      <input type="text" name="userOccupation" class="popup__input popup__input_user_occupation" placeholder="Должность">
+      <input type="text" name="userName" class="popup__input popup__input_type_user-name" placeholder="Имя">
+      <input type="text" name="userOccupation" class="popup__input popup__input_type_user-occupation" placeholder="Должность">
       <button class="popup__save-button" type="submit" aria-label="сохранить">Сохранить</button>
     </form>
     <button class="popup__close-button close-button" type="button" aria-label="закрыть"></button>
@@ -140,8 +140,8 @@
   <div class="popup__container">
     <h2 class="popup__title">Новое место</h2>
     <form class="popup__form" name="add-popup">
-      <input type="text" name="photoName" class="popup__input popup__input_photo_name" placeholder="Название">
-      <input type="text" name="photoLink" class="popup__input popup__input_photo_link" placeholder="Ссылка на картинку">
+      <input type="text" name="photoName" class="popup__input popup__input_type_photo-name" placeholder="Название">
+      <input type="text" name="photoLink" class="popup__input popup__input_type_photo-link" placeholder="Ссылка на картинку">
       <button class="popup__save-button" type="submit" aria-label="создать">Создать</button>
     </form>
     <button class="popup__close-button close-button" type="button" aria-label="закрыть"></button>
@@ -153,9 +153,9 @@
 <div class="popup popup_type_photo-zoom popup_bground_dark">
   <div class="photo">
     <figure class="photo__container">
-      <img src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg" alt="Калязин" class="photo__img">
+      <img class="photo__img">
       <figcaption class="photo__caption">
-        <h2 class="photo__title">Калязин</h2>
+        <h2 class="photo__title"></h2>
       </figcaption>
     </figure>
     <button class="popup__close-button close-button" type="button" aria-label="закрыть"></button>
