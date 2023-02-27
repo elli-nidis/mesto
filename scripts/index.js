@@ -53,11 +53,14 @@ drawCards(initialCards);
 //нахожу кнопки, открывающие попапы
 const openButtons = document.querySelectorAll('.open-button');
 
-//нахожу кнопки, закрывающие попапы (крестики)
+//нахожу кнопки, закрывающие попапы
 const closeButtons = document.querySelectorAll('.close-button');
 
-//нахожу кнопки удаления картинок (вёдра)
+//нахожу кнопки удаления картинок
 const deleteButtons = document.querySelectorAll('.card__delete-button');
+
+//нахожу кнопки лайков 🤍
+const likeButtons = document.querySelectorAll('.card__like-button');
 
 //нахожу попап редактирования профиля
 const userEditPopup = document.querySelector('.popup_type_edit-profile');
@@ -84,7 +87,9 @@ const popupFormPhoto = document.querySelector('[name="add-popup"]');
  */
 function openPopup(event) {
   if (event.target.classList.contains('profile__edit-button')) {
-  userEditPopup.classList.add('popup_opened');
+  setTimeout(() => {
+    userEditPopup.classList.add('popup_opened');
+  }, 200);
 
 //заполняю значения юзера в попапе - тяну из профиля
   popupUserName.value = profileUserName.textContent;
@@ -154,8 +159,11 @@ function handleAddPhotoPopup (event) {
   //добавляю слушателя открытия попапа photo-zoom на новую карточку
   photoGrid.firstChild.querySelector('.open-button').addEventListener('click', openPopup);
 
-  //добавляю слушателя удаления картинки на карточку
+  //добавляю слушателя удаления картинки на новую карточку
   photoGrid.firstChild.querySelector('.card__delete-button').addEventListener('click', deleteCard);
+  
+  //добавляю слушателя лайка на новую карточку
+  photoGrid.firstChild.querySelector('.card__like-button').addEventListener('click', likeCard);
 };
 
 /**
@@ -163,10 +171,16 @@ function handleAddPhotoPopup (event) {
  * удаляет картинку со страницы
  */
 function deleteCard(event) {
-  console.log('нажала на корзинку');
   const cardForDelete = event.target.closest('.card');
-  console.log(cardForDelete);
   cardForDelete.remove();
+};
+
+/**
+ * функция добавления/удаления лайка картинке
+ */
+function likeCard(event) {
+  const activeLike = event.target;
+  activeLike.classList.toggle('card__like-button_active');
 };
 
 //добавляю слушателей на кнопки открытия попапов
@@ -178,7 +192,11 @@ closeButtons.forEach((item) => item.addEventListener('click', closePopup));
 //добавляю слушателей на кнопки удаления
 deleteButtons.forEach((item) => item.addEventListener('click', deleteCard));
 
-// //Добавляю слушателя на кнопку Сохранить в попапе
+//добавляю слушателей на кнопки лайк
+likeButtons.forEach((item) => item.addEventListener('click', likeCard));
+
+//добавляю слушателя на кнопку Сохранить в попапе user-edit pop-up
 popupFormProfile.addEventListener('submit', handlePopupFormSubmit);
 
+//добавляю слушателя на кнопку Добавить в попапе add-photo pop-up
 popupFormPhoto.addEventListener('submit', handleAddPhotoPopup);
