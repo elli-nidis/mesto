@@ -1,4 +1,4 @@
-//массив карточек, доступных при загрузке страницы
+//устанавливаю массив карточек, доступных при загрузке страницы
 const initialCards = [
   {
     name: 'Архыз',
@@ -32,23 +32,30 @@ const templateCard = document.querySelector('.template-card').content;
 //нахожу место, где будут отрисовываться карточки
 const photoGrid = document.querySelector('.photo-grid');
 
-
-//отрисовываю карточки
-function drawCards(arr) {
+/**
+ * функция отрисовки карточки на странице
+ */
+function showCards(arr) {
   arr.forEach((item, index, arr) => {
     //клонирую элемент (карточку)
     const cardElement = templateCard.querySelector('.card').cloneNode(true);
-  
+
     //наполняю содержимым
     cardElement.querySelector('.card__img').src = arr[index].link;
     cardElement.querySelector('.card__img').alt = arr[index].name;
     cardElement.querySelector('.card__title').textContent = arr[index].name;
-    
+
     //отображаю на странице
+    // первоначальные карточки выстроятся по порядку, новая карточка отрисуется вначале
+    if (index === 0) {
     photoGrid.prepend(cardElement);
+    }
+    else photoGrid.append(cardElement);
   });
 };
-drawCards(initialCards);
+
+//отрисовываю карточки при загрузке страницы
+showCards(initialCards);
 
 //нахожу кнопки, открывающие попапы
 const openButtons = document.querySelectorAll('.open-button');
@@ -62,59 +69,77 @@ const deleteButtons = document.querySelectorAll('.card__delete-button');
 //нахожу кнопки лайков 🤍
 const likeButtons = document.querySelectorAll('.card__like-button');
 
-//нахожу попап редактирования профиля
+//нахожу попапы
 const userEditPopup = document.querySelector('.popup_type_edit-profile');
 const photoAddPopup = document.querySelector('.popup_type_add-photo');
 const photoZoomPopup = document.querySelector('.popup_type_photo-zoom');
 
-//нахожу поля для записи данных юзера в профиле и в попапе
+//нахожу поля для записи данных юзера в профиле и в попапе редактирования профиля
 const profileUserName = document.querySelector('.profile__user-name');
 const profileUserOccupation = document.querySelector('.profile__user-occupation');
 const popupUserName = document.querySelector('.popup__input_type_user-name');
 const popupUserOccupation = document.querySelector('.popup__input_type_user-occupation');
 
+//нахожу поля в попапе добавления карточки
 const popupPhotoName = document.querySelector('.popup__input_type_photo-name');
 const popupPhotLink = document.querySelector('.popup__input_type_photo-link');
 
-//нахожу форму
+//нахожу формы
 const popupFormProfile = document.querySelector('[name="edit-popup"]');
-console.log(popupFormProfile);
 const popupFormPhoto = document.querySelector('[name="add-popup"]');
 
+/**
+ * функция замедления открытия попапа
+ */
+function slowOpenPopup() {
+  //замедляю установку свойства opacity чтобы сработала анимация css
+  setTimeout(() => {
+    const popupOpened = document.querySelector('.popup_opened');
+    popupOpened.style.opacity = 1;
+  }, 300);
+};
 
 /**
  * функция открытия попапа
  */
 function openPopup(event) {
+  //для окна редактирования профиля
   if (event.target.classList.contains('profile__edit-button')) {
-  setTimeout(() => {
     userEditPopup.classList.add('popup_opened');
-  }, 200);
 
-//заполняю значения юзера в попапе - тяну из профиля
+  //заполняю значения юзера в попапе - тяну из профиля
   popupUserName.value = profileUserName.textContent;
   popupUserOccupation.value = profileUserOccupation.textContent;
   }
+  //для окна добавления карточки
   else if (event.target.classList.contains('profile__add-button')) {
     photoAddPopup.classList.add('popup_opened');
   }
-
+  //для окна просмотра фотографии
   else if (event.target.classList.contains('card__img')) {
     photoZoomPopup.classList.add('popup_opened');
+
+    //заполняю вёрстку окна просмотра фото данными выбранной фотографии
     photoZoomPopup.querySelector('.photo__img').src = event.target.src;
     photoZoomPopup.querySelector('.photo__img').alt = event.target.alt;
     photoZoomPopup.querySelector('.photo__title').textContent = event.target.alt;
   }
-
-}
+  //вызываю функцию замедления открытия модального окна
+  slowOpenPopup();
+};
 
 /**
  * функция закрытия попапа
  */
 function closePopup(event) {
   const popupClose = event.target.closest('.popup');
+  const popupOpened = document.querySelector('.popup_opened');
+
+  //обнуляю opacity перед закрытием, иначе анимация замедления не сработает второй раз на прежнем элементе
+  popupOpened.style.opacity = 0;
+  
   popupClose.classList.remove('popup_opened');
-}
+};
 
 /**
  * функция редактирования профиля через попап
@@ -130,32 +155,35 @@ function handlePopupFormSubmit (event) {
 
 //закрываю попап
   closePopup(event);
-}
+};
 
 /**
  * функция добавления картинки через попап
  * добавляет новую картинку на страницу
  */
 function handleAddPhotoPopup (event) {
-  const newElement = [];
   //отменяю стандартную отправку формы
   event.preventDefault();
 
+  //создаю элемент, который будет передан в функцию отрисовки карточки
+  const newElement = [];
+
+  //создаю и заполняю объект, который содержит данные для карточки
   const newPhotoName = popupPhotoName.value;
   const newPhotLink = popupPhotLink.value;
-
   const newCard = {
     name: newPhotoName,
     link: newPhotLink
-  }
+  };
+
   newElement.push(newCard);
-  // initialCards.push(newCard);
-  console.log(initialCards);
 
   //закрываю попап
   closePopup(event);
+
   //отрисовываю на странице новую карточку
-  drawCards(newElement);
+  showCards(newElement);
+
   //добавляю слушателя открытия попапа photo-zoom на новую карточку
   photoGrid.firstChild.querySelector('.open-button').addEventListener('click', openPopup);
 
@@ -176,7 +204,7 @@ function deleteCard(event) {
 };
 
 /**
- * функция добавления/удаления лайка картинке
+ * функция добавления/удаления лайка картинке 🤍
  */
 function likeCard(event) {
   const activeLike = event.target;
@@ -192,7 +220,7 @@ closeButtons.forEach((item) => item.addEventListener('click', closePopup));
 //добавляю слушателей на кнопки удаления
 deleteButtons.forEach((item) => item.addEventListener('click', deleteCard));
 
-//добавляю слушателей на кнопки лайк
+//добавляю слушателей на кнопки лайк 🤍
 likeButtons.forEach((item) => item.addEventListener('click', likeCard));
 
 //добавляю слушателя на кнопку Сохранить в попапе user-edit pop-up
