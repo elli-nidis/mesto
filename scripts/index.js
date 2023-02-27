@@ -56,6 +56,9 @@ const openButtons = document.querySelectorAll('.open-button');
 //нахожу кнопки, закрывающие попапы (крестики)
 const closeButtons = document.querySelectorAll('.close-button');
 
+//нахожу кнопки удаления картинок (вёдра)
+const deleteButtons = document.querySelectorAll('.card__delete-button');
+
 //нахожу попап редактирования профиля
 const userEditPopup = document.querySelector('.popup_type_edit-profile');
 const photoAddPopup = document.querySelector('.popup_type_add-photo');
@@ -105,7 +108,6 @@ function openPopup(event) {
  */
 function closePopup(event) {
   const popupClose = event.target.closest('.popup');
-  console.log(popupClose);
   popupClose.classList.remove('popup_opened');
 }
 
@@ -142,7 +144,7 @@ function handleAddPhotoPopup (event) {
     link: newPhotLink
   }
   newElement.push(newCard);
-  initialCards.push(newCard);
+  // initialCards.push(newCard);
   console.log(initialCards);
 
   //закрываю попап
@@ -151,15 +153,30 @@ function handleAddPhotoPopup (event) {
   drawCards(newElement);
   //добавляю слушателя открытия попапа photo-zoom на новую карточку
   photoGrid.firstChild.querySelector('.open-button').addEventListener('click', openPopup);
+
+  //добавляю слушателя удаления картинки на карточку
+  photoGrid.firstChild.querySelector('.card__delete-button').addEventListener('click', deleteCard);
 };
 
-
+/**
+ * функция удаления картинки
+ * удаляет картинку со страницы
+ */
+function deleteCard(event) {
+  console.log('нажала на корзинку');
+  const cardForDelete = event.target.closest('.card');
+  console.log(cardForDelete);
+  cardForDelete.remove();
+};
 
 //добавляю слушателей на кнопки открытия попапов
 openButtons.forEach((item) => item.addEventListener('click', openPopup));
 
 //добавляю слушателей на кнопки закрытия попапов
 closeButtons.forEach((item) => item.addEventListener('click', closePopup));
+
+//добавляю слушателей на кнопки удаления
+deleteButtons.forEach((item) => item.addEventListener('click', deleteCard));
 
 // //Добавляю слушателя на кнопку Сохранить в попапе
 popupFormProfile.addEventListener('submit', handlePopupFormSubmit);
