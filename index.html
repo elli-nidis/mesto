@@ -68,28 +68,32 @@
 </template>
 <!-- ***** template-card end ***** -->
 
-<!-- ***** user-edit pop-up start ***** -->
+<!-- ***** edit-profile pop-up start ***** -->
 <div class="popup popup_type_edit-profile popup_bground_half-dark">
   <div class="popup__container">
     <h2 class="popup__title">Редактировать профиль</h2>
-    <form class="popup__form" name="edit-popup">
-      <input type="text" name="userName" class="popup__input popup__input_type_user-name" placeholder="Имя">
-      <input type="text" name="userOccupation" class="popup__input popup__input_type_user-occupation" placeholder="Должность">
-      <button class="popup__save-button" type="submit" aria-label="сохранить">Сохранить</button>
+    <form class="popup__form" name="edit-popup" novalidate>
+      <input type="text" name="userName" class="popup__input popup__input_type_user-name" placeholder="Имя" minlength="2" maxlength="40" required>
+      <span class="popup__error">Здесь будет сообщение об ошибке</span>
+      <input type="text" name="userOccupation" class="popup__input popup__input_type_user-occupation" placeholder="Должность" minlength="2" maxlength="200" required>
+      <span class="popup__error">Здесь будет сообщение об ошибке</span>
+      <button class="popup__button" type="submit" aria-label="сохранить">Сохранить</button>
     </form>
     <button class="popup__close-button close-button" type="button" aria-label="закрыть"></button>
   </div>
 </div>
-<!-- ***** user-edit pop-up end ***** -->
+<!-- ***** edit-profile pop-up end ***** -->
 
 <!-- ***** add-photo pop-up start ***** -->
 <div class="popup popup_type_add-photo popup_bground_half-dark">
   <div class="popup__container">
     <h2 class="popup__title">Новое место</h2>
-    <form class="popup__form" name="add-popup">
-      <input type="text" name="photoName" class="popup__input popup__input_type_photo-name" placeholder="Название">
-      <input type="text" name="photoLink" class="popup__input popup__input_type_photo-link" placeholder="Ссылка на картинку">
-      <button class="popup__save-button" type="submit" aria-label="создать">Создать</button>
+    <form class="popup__form" name="add-popup" novalidate>
+      <input type="text" name="photoName" class="popup__input popup__input_type_photo-name" placeholder="Название" minlength="2" maxlength="30" required>
+      <span class="popup__error">Здесь будет сообщение об ошибке</span>
+      <input type="url" name="photoLink" class="popup__input popup__input_type_photo-link" placeholder="Ссылка на картинку" required>
+      <span class="popup__error">Здесь будет сообщение об ошибке</span>
+      <button class="popup__button" type="submit" aria-label="создать">Создать</button>
     </form>
     <button class="popup__close-button close-button" type="button" aria-label="закрыть"></button>
   </div>
@@ -110,7 +114,8 @@
 </div>
 <!-- ***** photo-zoom pop-up end ***** -->
 
-<script src="./scripts/constants.js"></script> 
+<script src="./scripts/constants.js"></script>
+<script src="./scripts/validate.js"></script>
 
 </body>
 </html>
