@@ -95,21 +95,7 @@ initialCards.forEach((card) => {
 });
 
 /**
- * функция открытия попапа
- */
-function openPopup(popup) {
-  popup.classList.add('popup_opened');
-
-  //вызываю функцию добавления слушателя на клавишу esc
-  setEventListenerWindow();
-
-  //вызываю функцию добавления слушателя на оверлей
-  setEventListenerOverlay(popup);
-};
-
-
-/**
- * функция находит открытый попап и возвращает его тег
+ * функция нахождения открытого попапа. Возвращает его тег
  */
 function findPopupToClose() {
   popup = document.querySelector('.popup_opened');
@@ -130,12 +116,11 @@ function checkEscapeButtonClick(evt) {
 };
 
 /**
- * функция проверки клика на оверлей
+ * функция проверки клика по оверлею
  */
 function checkOverlayClick(evt) {
-  console.log('слушатель оверлея работает');
   if (evt.target.classList.contains('popup')) {
-    //если произошёл клин на оверлей, нахожу открытый попап через функцию findPopupToClose
+    //если произошёл клик на оверлей, нахожу открытый попап через функцию findPopupToClose
     popup = findPopupToClose();
 
     //закрываю открытый попап
@@ -162,6 +147,19 @@ function setEventListenerOverlay(popup) {
  */
 function removeEventListenerWindow(popup) {
   window.removeEventListener('keydown', checkEscapeButtonClick);
+};
+
+/**
+ * функция открытия попапа
+ */
+function openPopup(popup) {
+  popup.classList.add('popup_opened');
+
+  //вызываю функцию добавления слушателя на клавишу esc
+  setEventListenerWindow();
+
+  //вызываю функцию добавления слушателя на оверлей
+  setEventListenerOverlay(popup);
 };
 
 /**
@@ -255,12 +253,6 @@ profileAddButton.addEventListener('click', () => {openPopup(photoAddPopup)});
 userEditPopupCloseButton.addEventListener('click', () => {closePopup(userEditPopup)});
 photoAddPopupCloseButton.addEventListener('click', () => {closePopup(photoAddPopup)});
 photoZoomPopupCloseButton.addEventListener('click', () => {closePopup(photoZoomPopup)});
-
-
-// photoAddPopup.addEventListener('click', () => closePopup(photoAddPopup));
-// photoZoomPopup.addEventListener('click', () => closePopup(photoZoomPopup));
-
-
 
 //добавляю слушателя на кнопку Сохранить в попапе user-edit pop-up
 profileForm.addEventListener('submit', handleEditProfileForm);
