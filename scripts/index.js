@@ -99,6 +99,69 @@ initialCards.forEach((card) => {
  */
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+
+  //вызываю функцию добавления слушателя на клавишу esc
+  setEventListenerWindow();
+
+  //вызываю функцию добавления слушателя на оверлей
+  setEventListenerOverlay(popup);
+};
+
+
+/**
+ * функция находит открытый попап и возвращает его тег
+ */
+function findPopupToClose() {
+  popup = document.querySelector('.popup_opened');
+  return popup;
+}
+
+/**
+ * функция проверки нажатия клавиши esc
+ */
+function checkEscapeButtonClick(evt) {
+  if (evt.key === 'Escape') {
+    //если нажата клавиша esc, то нахожу открытый попап через функцию findPopupToClose
+    popup = findPopupToClose();
+
+    //закрываю открытый попап
+    closePopup(popup);
+  }
+};
+
+/**
+ * функция проверки клика на оверлей
+ */
+function checkOverlayClick(evt) {
+  console.log('слушатель оверлея работает');
+  if (evt.target.classList.contains('popup')) {
+    //если произошёл клин на оверлей, нахожу открытый попап через функцию findPopupToClose
+    popup = findPopupToClose();
+
+    //закрываю открытый попап
+    closePopup(popup);
+  }
+};
+
+/**
+ * функция добавления слушателя на клавишу esc
+ */
+function setEventListenerWindow() {
+  window.addEventListener('keydown', checkEscapeButtonClick);
+};
+
+/**
+ * функция добавления слушателя на overlay
+ */
+function setEventListenerOverlay(popup) {
+  popup.addEventListener('click', checkOverlayClick);
+};
+
+/**
+ * функция удаления слушателя с клавиши esc
+ */
+function removeEventListenerWindow(popup) {
+  window.removeEventListener('keydown', checkEscapeButtonClick);
 };
 
 /**
@@ -106,6 +169,9 @@ function openPopup(popup) {
  */
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+
+  //удаляю слушателя клавиши esc
+  removeEventListenerWindow(popup);
 };
 
 /**
@@ -189,6 +255,12 @@ profileAddButton.addEventListener('click', () => {openPopup(photoAddPopup)});
 userEditPopupCloseButton.addEventListener('click', () => {closePopup(userEditPopup)});
 photoAddPopupCloseButton.addEventListener('click', () => {closePopup(photoAddPopup)});
 photoZoomPopupCloseButton.addEventListener('click', () => {closePopup(photoZoomPopup)});
+
+
+// photoAddPopup.addEventListener('click', () => closePopup(photoAddPopup));
+// photoZoomPopup.addEventListener('click', () => closePopup(photoZoomPopup));
+
+
 
 //добавляю слушателя на кнопку Сохранить в попапе user-edit pop-up
 profileForm.addEventListener('submit', handleEditProfileForm);
