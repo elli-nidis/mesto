@@ -1,3 +1,14 @@
+
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible',
+  popupError: '.popup__error'
+};
+
 /**
  * функция показывает текст ошибки валидации поля
  * @param {object} errorPlace тег, который нужно показать
@@ -156,6 +167,8 @@ function enableValidation({formSelector, inputSelector, submitButtonSelector, in
     //нахожу в текущей форме кнопку с функцией submit
     const buttonElement = form.querySelector(submitButtonSelector);
 
+
+
     //вызываю функцию toggleButtonState, которая управляет состоянием кнопки сабмит
     toggleButtonState(inputList, buttonElement, inactiveButtonClass);
 
@@ -173,11 +186,46 @@ function enableValidation({formSelector, inputSelector, submitButtonSelector, in
 };
 
 //включаю валидацию, в качестве параметра - объект с настройками
-enableValidation({
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
-});
+enableValidation(validationConfig);
+
+//нахожу блок profile, на который буду вешать слушателя
+//слушатель отслеживает нажатие на кнопки открытия попапов профайла и добавления карточки
+//после нажатия целевых кнопок, устанавливается нужный попап и происходит очистка ошибок
+//и блокировка кнопки сабмит
+const profile = document.querySelector('.profile');
+
+/**
+ * функция поиска попапа, который нужно очистить от ошибок
+ */
+function findPopupForCleaning(evt) {
+  if(evt.target.classList.contains('profile__edit-button')) return userEditPopup;
+  else if(evt.target.classList.contains('profile__add-button')) return photoAddPopup;
+};
+
+/**
+* функция очистки целевого попапа от ошибок
+*/
+function clearErrors() {
+  //вешаю слушателя на блок profile (использую делегирование чтобы добраться до кнопок открытия попапов)
+  profile.addEventListener('click', (evt) => {
+    //нахожу попап, который нужно очищать
+    const popup = findPopupForCleaning(evt);
+
+   //нахожу кнопку сабмит в попапе, поля инпут и поля с текстом ошибок, которые нужно очистить
+    const buttonElement = popup.querySelector(validationConfig.submitButtonSelector);
+    const inputElements = Array.from(popup.querySelectorAll(validationConfig.inputSelector));
+    const errorElements = Array.from(popup.querySelectorAll(validationConfig.popupError));
+
+    //вызываю функцию деактивации кнопки сабмит
+    disableButtonState(buttonElement, validationConfig.inactiveButtonClass);
+
+    //для каждого инпута вызываю функцию, которая убирает стили для невалидного поля
+    inputElements.forEach((input) => removeStyleErrorInput(input, validationConfig.inputErrorClass));
+    
+    //для каждого поля с текстом ошибки вызываю функцию, которая скрывает это поле
+    errorElements.forEach((error) => hideInputError(error, validationConfig.errorClass));
+  });
+};
+
+//запускаю функцию очистки целевого попапа от ошибок
+clearErrors();

@@ -98,7 +98,7 @@ initialCards.forEach((card) => {
  * функция нахождения открытого попапа. Возвращает его тег
  */
 function findPopupToClose() {
-  popup = document.querySelector('.popup_opened');
+  const popup = document.querySelector('.popup_opened');
   return popup;
 }
 
@@ -108,7 +108,7 @@ function findPopupToClose() {
 function checkEscapeButtonClick(evt) {
   if (evt.key === 'Escape') {
     //если нажата клавиша esc, то нахожу открытый попап через функцию findPopupToClose
-    popup = findPopupToClose();
+    const popup = findPopupToClose();
 
     //закрываю открытый попап
     closePopup(popup);
@@ -121,7 +121,7 @@ function checkEscapeButtonClick(evt) {
 function checkOverlayClick(evt) {
   if (evt.target.classList.contains('popup')) {
     //если произошёл клик на оверлей, нахожу открытый попап через функцию findPopupToClose
-    popup = findPopupToClose();
+    const popup = findPopupToClose();
 
     //закрываю открытый попап
     closePopup(popup);
@@ -132,7 +132,7 @@ function checkOverlayClick(evt) {
  * функция добавления слушателя на клавишу esc
  */
 function setEventListenerWindow() {
-  window.addEventListener('keydown', checkEscapeButtonClick);
+  document.addEventListener('keydown', checkEscapeButtonClick);
 };
 
 /**
@@ -145,8 +145,24 @@ function setEventListenerOverlay(popup) {
 /**
  * функция удаления слушателя с клавиши esc
  */
-function removeEventListenerWindow(popup) {
-  window.removeEventListener('keydown', checkEscapeButtonClick);
+function removeEventListenerWindow() {
+  document.removeEventListener('keydown', checkEscapeButtonClick);
+};
+
+/**
+ * функция удаления слушателя с overlay
+ */
+function removeEventListenerOverlay(popup) {
+  popup.removeEventListener('click', checkOverlayClick);
+};
+
+/**
+ * функия очистки полей формы попапа добавления фото
+ */
+function checkOpenedAddPhotoPopup(popup) {
+  if(popup.classList.contains('popup_type_add-photo')) {
+    photoForm.reset();
+  }
 };
 
 /**
@@ -160,6 +176,9 @@ function openPopup(popup) {
 
   //вызываю функцию добавления слушателя на оверлей
   setEventListenerOverlay(popup);
+
+  //вызываю функцию, которая очищает форму если открывается попап добавления фото
+  checkOpenedAddPhotoPopup(popup);
 };
 
 /**
@@ -169,7 +188,10 @@ function closePopup(popup) {
   popup.classList.remove('popup_opened');
 
   //удаляю слушателя клавиши esc
-  removeEventListenerWindow(popup);
+  removeEventListenerWindow();
+
+  //удаляю слушателя с оверлея
+  removeEventListenerOverlay(popup);
 };
 
 /**
@@ -222,7 +244,7 @@ function handleAddPhotoForm (event) {
   closePopup(photoAddPopup);
   
   //очищаю инпуты формы
-  photoForm.reset();
+  // photoForm.reset();
 
   //отрисовываю на странице новую карточку
   addCard(newCard);
