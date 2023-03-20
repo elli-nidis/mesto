@@ -167,8 +167,6 @@ function enableValidation({formSelector, inputSelector, submitButtonSelector, in
     //нахожу в текущей форме кнопку с функцией submit
     const buttonElement = form.querySelector(submitButtonSelector);
 
-
-
     //вызываю функцию toggleButtonState, которая управляет состоянием кнопки сабмит
     toggleButtonState(inputList, buttonElement, inactiveButtonClass);
 
@@ -188,7 +186,7 @@ function enableValidation({formSelector, inputSelector, submitButtonSelector, in
 //включаю валидацию, в качестве параметра - объект с настройками
 enableValidation(validationConfig);
 
-//нахожу блок profile, на который буду вешать слушателя
+//нахожу блок profile, на который буду вешать слушателя в функции clearErrors
 //слушатель отслеживает нажатие на кнопки открытия попапов профайла и добавления карточки
 //после нажатия целевых кнопок, устанавливается нужный попап и происходит очистка ошибок
 //и блокировка кнопки сабмит
