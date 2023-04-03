@@ -36,62 +36,143 @@ const templateCard = document.querySelector('.template-card').content;
 //нахожу место, где будут отрисовываться карточки
 const photoGrid = document.querySelector('.photo-grid');
 
-/**
- * функция создания карточки на основе шаблона
- */
-function createCard(data) {
-  //клонирую шаблон карточки
-  const cardElement = templateCard.querySelector('.card').cloneNode(true);
+// /**
+//  * функция создания карточки на основе шаблона
+//  */
+// function createCard(data) {
+//   //клонирую шаблон карточки
+//   const cardElement = templateCard.querySelector('.card').cloneNode(true);
 
-  const photoImg = cardElement.querySelector('.card__img');
-  const photoTitle = cardElement.querySelector('.card__title');
+//   const photoImg = cardElement.querySelector('.card__img');
+//   const photoTitle = cardElement.querySelector('.card__title');
 
-  //наполняю содержимым из данных объекта, полученного на входе в ф-цию
-  photoImg.src = data.link;
-  photoImg.alt = data.name;
-  photoTitle.textContent = data.name;
+//   //наполняю содержимым из данных объекта, полученного на входе в ф-цию
+//   photoImg.src = data.link;
+//   photoImg.alt = data.name;
+//   photoTitle.textContent = data.name;
 
-  //нахожу кнопку удаления картинки
-  const buttonDelete = cardElement.querySelector('.card__delete-button');
+//   //нахожу кнопку удаления картинки
+//   const buttonDelete = cardElement.querySelector('.card__delete-button');
 
-  // нахожу кнопку лайка 🤍
-  const buttonLike = cardElement.querySelector('.card__like-button');
+//   // нахожу кнопку лайка 🤍
+//   const buttonLike = cardElement.querySelector('.card__like-button');
 
-  //нахожу кнопку, открывающую попап
-  const buttonOpen = cardElement.querySelector('.open-button');
+//   //нахожу кнопку, открывающую попап
+//   const buttonOpen = cardElement.querySelector('.open-button');
 
-  //добавляю слушателя на кнопку открытия попапа photo-zoom
-  buttonOpen.addEventListener('click', (event) => {
-    openPopup(photoZoomPopup);
-    photoZoomImg.src = event.target.src;
-    photoZoomImg.alt = event.target.alt;
-    photoZoomTitle.textContent = event.target.alt;
-  });
+//   //добавляю слушателя на кнопку открытия попапа photo-zoom
+//   buttonOpen.addEventListener('click', (event) => {
+//     openPopup(photoZoomPopup);
+//     photoZoomImg.src = event.target.src;
+//     photoZoomImg.alt = event.target.alt;
+//     photoZoomTitle.textContent = event.target.alt;
+//   });
 
-  //добавляю слушателя на кнопку удаления
-  buttonDelete.addEventListener('click', deleteCard);
+//   //добавляю слушателя на кнопку удаления
+//   buttonDelete.addEventListener('click', deleteCard);
 
-  //добавляю слушателя на кнопку лайк 🤍
-  buttonLike.addEventListener('click', likeCard);
+//   //добавляю слушателя на кнопку лайк 🤍
+//   buttonLike.addEventListener('click', likeCard);
 
-  //возвращаю готовый элемент, который можно размещать в вёрстке
-  return cardElement;
-};
+//   //возвращаю готовый элемент, который можно размещать в вёрстке
+//   return cardElement;
+// };
 
-/**
-* функция отрисовки новой (добавленной вручную) карточки на странице
-*/
-function addCard(data) {
-  //создаю экземпляр карточки с помощью ф-ции createCard
-  const cardElement = createCard(data);
 
-  //отображаю карточку на странице
-  photoGrid.prepend(cardElement);
-};
+class Card {
+  constructor (data, templateCard) {
+    this.link = data.link;
+    this.name = data.name;
+    this.templateCard = templateCard;
+
+  }
+  //создаю пустой каркас (вёрстку) карточки из шаблона и возвращаю его
+  _getTemplate() {
+    //клонирую шаблон карточки
+    const element = this.templateCard.querySelector('.card').cloneNode(true);
+    return element;
+  }
+
+  //метод устанавливает/снимает лайк 
+  _likeCard() {
+    this.buttonLike.classList.toggle('card__like-button_active');
+  }
+
+  //метод удаляет карточку
+  _deleteCard() {
+    this.cardElement.remove();
+  }
+
+  //метод открывает попап photo-zoom
+  _openPhotoZoomPopup() {
+    const photoZoomPopup = document.querySelector('.popup_type_photo-zoom');
+    openPopup(photoZoomPopup); //эта строчка не работает
+    const photoZoomImg = photoZoomPopup.querySelector('.photo__img'); //эта строчка не работает
+    const photoZoomTitle = photoZoomPopup.querySelector('.photo__title'); //эта строчка не работает
+
+    this.photoZoomImg.src = this.link;
+    this.photoZoomImg.alt = this.name;
+    this.photoZoomTitle.textContent = this.name;
+
+    
+
+  }
+
+  //Вешаю слушателей
+  _setEventListeners() {
+    this.buttonLike.addEventListener('click', () => this._likeCard());
+    this.buttonDelete.addEventListener('click', () => this._deleteCard());
+    this.photoImg.addEventListener('click', () => this._openPhotoZoomPopup());
+  }
+
+  //создаю пустой каркас (вёрстку) карточки из шаблона и возвращаю его
+  //наполняю каркас (вёрстку) пустой карточки данными (картинка + название)
+  createCard() {
+    //this.cardElement = this.templateCard.querySelector('.card').cloneNode(true);
+    this.cardElement = this._getTemplate();
+    this.photoImg = this.cardElement.querySelector('.card__img');
+    this.photoTitle = this.cardElement.querySelector('.card__title');
+
+    //наполняю содержимым из данных объекта, полученного на входе в ф-цию
+    this.photoImg.src = this.link;
+    this.photoImg.alt = this.name;
+    this.photoTitle.textContent = this.name;
+
+    //нахожу кнопку удаления картинки
+    this.buttonDelete = this.cardElement.querySelector('.card__delete-button');
+
+    // нахожу кнопку лайка 🤍
+    this.buttonLike = this.cardElement.querySelector('.card__like-button');
+
+    //вызываю метод, который устанавливает слушателей на кнопки лайк, удалить, посмотреть фото
+    this._setEventListeners();
+    
+    //возвращаю готовую карточку
+    return this.cardElement;
+  }
+
+}
+
+// /**
+// * функция отрисовки новой (добавленной вручную) карточки на странице
+// */
+// function addCard(data) {
+//   //создаю экземпляр карточки с помощью ф-ции createCard
+//   const cardElement = createCard(data);
+
+//   //отображаю карточку на странице
+//   photoGrid.prepend(cardElement);
+// };
 
 //отрисовываю карточки при загрузке страницы
-initialCards.forEach((card) => {
-  photoGrid.append(createCard(card));
+// initialCards.forEach((card) => {
+//   photoGrid.append(createCard(card));
+// });
+
+//отрисовываю карточки при загрузке страницы
+initialCards.forEach((data) => {
+  const card = new Card(data, templateCard);
+  photoGrid.append(card.createCard());
 });
 
 /**
@@ -157,7 +238,7 @@ function removeEventListenerOverlay(popup) {
 };
 
 /**
- * функия очистки полей формы попапа добавления фото
+ * функция очистки полей формы попапа добавления фото
  */
 function checkOpenedAddPhotoPopup(popup) {
   if(popup.classList.contains('popup_type_add-photo')) {
@@ -224,48 +305,48 @@ function handleEditProfileForm (event) {
   closePopup(userEditPopup);
 };
 
-/**
- * функция добавления картинки через попап
- * добавляет новую картинку на страницу
- */
-function handleAddPhotoForm (event) {
-  //отменяю стандартную отправку формы
-  event.preventDefault();
+// /**
+//  * функция добавления картинки через попап
+//  * добавляет новую картинку на страницу
+//  */
+// function handleAddPhotoForm (event) {
+//   //отменяю стандартную отправку формы
+//   event.preventDefault();
 
-  //создаю и заполняю объект, который содержит данные для карточки
-  const newPhotoName = inputPhotoName.value;
-  const newPhotLink = inputPhotLink.value;
-  const newCard = {
-    name: newPhotoName,
-    link: newPhotLink
-  };
+//   //создаю и заполняю объект, который содержит данные для карточки
+//   const newPhotoName = inputPhotoName.value;
+//   const newPhotLink = inputPhotLink.value;
+//   const newCard = {
+//     name: newPhotoName,
+//     link: newPhotLink
+//   };
 
-  //закрываю попап
-  closePopup(photoAddPopup);
+//   //закрываю попап
+//   closePopup(photoAddPopup);
   
-  //очищаю инпуты формы
-  // photoForm.reset();
+//   //очищаю инпуты формы
+//   // photoForm.reset();
 
-  //отрисовываю на странице новую карточку
-  addCard(newCard);
-};
+//   //отрисовываю на странице новую карточку
+//   addCard(newCard);
+// };
 
-/**
- * функция удаления картинки
- * удаляет картинку со страницы
- */
-function deleteCard(event) {
-  const cardForDelete = event.target.closest('.card');
-  cardForDelete.remove();
-};
+// /**
+//  * функция удаления картинки
+//  * удаляет картинку со страницы
+//  */
+// function deleteCard(event) {
+//   const cardForDelete = event.target.closest('.card');
+//   cardForDelete.remove();
+// };
 
-/**
- * функция добавления/удаления лайка картинке 🤍
- */
-function likeCard(event) {
-  const activeLike = event.target;
-  activeLike.classList.toggle('card__like-button_active');
-};
+// /**
+//  * функция добавления/удаления лайка картинке 🤍
+//  */
+// function likeCard(event) {
+//   const activeLike = event.target;
+//   activeLike.classList.toggle('card__like-button_active');
+// };
 
 //добавляю слушателей на кнопки открытия попапов
 profileEditButton.addEventListener('click', openEditProfilePopup);
@@ -279,5 +360,8 @@ photoZoomPopupCloseButton.addEventListener('click', () => {closePopup(photoZoomP
 //добавляю слушателя на кнопку Сохранить в попапе user-edit pop-up
 profileForm.addEventListener('submit', handleEditProfileForm);
 
-//добавляю слушателя на кнопку Добавить в попапе add-photo pop-up
-photoForm.addEventListener('submit', handleAddPhotoForm);
+// //добавляю слушателя на кнопку Добавить в попапе add-photo pop-up
+// photoForm.addEventListener('submit', handleAddPhotoForm);
+
+
+
