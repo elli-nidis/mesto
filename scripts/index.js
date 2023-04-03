@@ -106,7 +106,7 @@ class Card {
   //метод открывает попап photo-zoom
   _openPhotoZoomPopup() {
     const photoZoomPopup = document.querySelector('.popup_type_photo-zoom');
-    openPopup(photoZoomPopup); //эта строчка не работает
+    openPopup(photoZoomPopup); 
     const photoZoomImg = photoZoomPopup.querySelector('.photo__img'); //эта строчка не работает
     const photoZoomTitle = photoZoomPopup.querySelector('.photo__title'); //эта строчка не работает
 
