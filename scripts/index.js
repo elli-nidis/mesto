@@ -104,12 +104,12 @@ class Card {
   }
 
   //метод открывает попап photo-zoom
+
   _openPhotoZoomPopup() {
 
     const photoZoomPopup = document.querySelector('.popup_type_photo-zoom');
-
-    openPopup(photoZoomPopup); 
-
+    checkOpenedAddPhotoPopup(photoZoomPopup); //переименовать ф-цию
+    
     this.photoZoomImg = photoZoomPopup.querySelector('.photo__img');
     this.photoZoomTitle = photoZoomPopup.querySelector('.photo__title');
 
@@ -154,16 +154,18 @@ class Card {
 
 }
 
-// /**
-// * функция отрисовки новой (добавленной вручную) карточки на странице
-// */
-// function addCard(data) {
-//   //создаю экземпляр карточки с помощью ф-ции createCard
-//   const cardElement = createCard(data);
+/**
+* функция отрисовки новой (добавленной вручную) карточки на странице
+*/
+function addCard(data) {
+  //создаю экземпляр карточки с помощью ф-ции createCard
+  //const cardElement = createCard(data);
+  const card = new Card(data, templateCard);
 
-//   //отображаю карточку на странице
-//   photoGrid.prepend(cardElement);
-// };
+  //отображаю карточку на странице
+  //photoGrid.prepend(cardElement);
+  photoGrid.prepend(card.createCard());
+};
 
 //отрисовываю карточки при загрузке страницы
 // initialCards.forEach((card) => {
@@ -242,9 +244,7 @@ function removeEventListenerOverlay(popup) {
  * функция очистки полей формы попапа добавления фото
  */
 function checkOpenedAddPhotoPopup(popup) {
-  if(popup.classList.contains('popup_type_add-photo')) {
-    photoForm.reset();
-  }
+  photoForm.reset();
 };
 
 /**
@@ -258,9 +258,6 @@ function openPopup(popup) {
 
   //вызываю функцию добавления слушателя на оверлей
   setEventListenerOverlay(popup);
-
-  //вызываю функцию, которая очищает форму если открывается попап добавления фото
-  checkOpenedAddPhotoPopup(popup);
 };
 
 /**
@@ -306,31 +303,31 @@ function handleEditProfileForm (event) {
   closePopup(userEditPopup);
 };
 
-// /**
-//  * функция добавления картинки через попап
-//  * добавляет новую картинку на страницу
-//  */
-// function handleAddPhotoForm (event) {
-//   //отменяю стандартную отправку формы
-//   event.preventDefault();
+/**
+ * функция добавления картинки через попап
+ * добавляет новую картинку на страницу
+ */
+function handleAddPhotoForm (event) {
+  //отменяю стандартную отправку формы
+  event.preventDefault();
 
-//   //создаю и заполняю объект, который содержит данные для карточки
-//   const newPhotoName = inputPhotoName.value;
-//   const newPhotLink = inputPhotLink.value;
-//   const newCard = {
-//     name: newPhotoName,
-//     link: newPhotLink
-//   };
+  //создаю и заполняю объект, который содержит данные для карточки
+  const newPhotoName = inputPhotoName.value;
+  const newPhotLink = inputPhotLink.value;
+  const newCard = {
+    name: newPhotoName,
+    link: newPhotLink
+  };
 
-//   //закрываю попап
-//   closePopup(photoAddPopup);
+  //закрываю попап
+  closePopup(photoAddPopup);
   
-//   //очищаю инпуты формы
-//   // photoForm.reset();
+  //очищаю инпуты формы
+  checkOpenedAddPhotoPopup(photoAddPopup);
 
-//   //отрисовываю на странице новую карточку
-//   addCard(newCard);
-// };
+  //отрисовываю на странице новую карточку
+  addCard(newCard);
+};
 
 // /**
 //  * функция удаления картинки
@@ -361,8 +358,8 @@ photoZoomPopupCloseButton.addEventListener('click', () => {closePopup(photoZoomP
 //добавляю слушателя на кнопку Сохранить в попапе user-edit pop-up
 profileForm.addEventListener('submit', handleEditProfileForm);
 
-// //добавляю слушателя на кнопку Добавить в попапе add-photo pop-up
-// photoForm.addEventListener('submit', handleAddPhotoForm);
+//добавляю слушателя на кнопку Добавить в попапе add-photo pop-up
+photoForm.addEventListener('submit', handleAddPhotoForm);
 
 
 
