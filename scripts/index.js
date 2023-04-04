@@ -105,16 +105,17 @@ class Card {
 
   //метод открывает попап photo-zoom
   _openPhotoZoomPopup() {
+
     const photoZoomPopup = document.querySelector('.popup_type_photo-zoom');
+
     openPopup(photoZoomPopup); 
-    const photoZoomImg = photoZoomPopup.querySelector('.photo__img'); //эта строчка не работает
-    const photoZoomTitle = photoZoomPopup.querySelector('.photo__title'); //эта строчка не работает
+
+    this.photoZoomImg = photoZoomPopup.querySelector('.photo__img');
+    this.photoZoomTitle = photoZoomPopup.querySelector('.photo__title');
 
     this.photoZoomImg.src = this.link;
     this.photoZoomImg.alt = this.name;
     this.photoZoomTitle.textContent = this.name;
-
-    
 
   }
 
