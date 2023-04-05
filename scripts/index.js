@@ -42,8 +42,7 @@ const templateCard = document.querySelector('.template-card').content;
 //нахожу место, где будут отрисовываться карточки
 const photoGrid = document.querySelector('.photo-grid');
 
-
-
+//объект с селекторами
 const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -54,16 +53,21 @@ const validationConfig = {
   popupError: '.popup__error'
 };
 
+//создаю экземпляры классов валидации для каждой формы
+const userEditPopupFormValidator = new FormValidator(validationConfig, '[name="edit-popup"]');
+const photoAddPopupFormValidator = new FormValidator(validationConfig, '[name="add-popup"]');
+
+//запускаю валидацию для каждой формы
+userEditPopupFormValidator.enableValidation();
+photoAddPopupFormValidator.enableValidation();
+
 /**
 * функция отрисовки новой (добавленной вручную) карточки на странице
 */
 function addCard(data) {
-
   const card = new Card(data, templateCard, openPopup);
-
   photoGrid.prepend(card.createCard());
 };
-
 
 //отрисовываю карточки при загрузке страницы
 initialCards.forEach((data) => {
@@ -134,10 +138,9 @@ function removeEventListenerOverlay(popup) {
 };
 
 /**
- * функция очистки полей формы попапа добавления фото
+ * функция очистки полей формы
  */
-function checkOpenedAddPhotoPopup(popup) {
-  console.log('работает функция checkOpenedAddPhotoPopup');
+function clearForm(popup) {
   photoForm.reset();
 };
 
@@ -168,6 +171,24 @@ function closePopup(popup) {
 };
 
 /**
+ * функция очистки формы от ошибок валидации
+ */
+function clearErrors(popup) {
+  //нахожу поля инпуты и поля с текстом ошибок, которые нужно очистить
+  const inputElements = Array.from(popup.querySelectorAll(validationConfig.inputSelector));
+  const errorElements = Array.from(popup.querySelectorAll(validationConfig.popupError));
+
+  //для каждого инпута убираю стили для невалидного поля
+  inputElements.forEach((input) => input.classList.remove(validationConfig.inputErrorClass));
+
+  //для каждого поля с текстом ошибки скрываю это поле
+  errorElements.forEach((error) => {
+    error.textContent = '';
+    error.classList.remove(validationConfig.errorClass);
+  });
+};
+
+/**
  * обработчик попапа редактирования профиля
  * заполняет значения в инпутах формы и вызывает функцию
  * открытия попапа
@@ -177,8 +198,33 @@ function openEditProfilePopup() {
   inputUserName.value = profileUserName.textContent;
   inputUserOccupation.value = profileUserOccupation.textContent;
 
+  //вызываю метод деактивации кнопки сабмит
+  userEditPopupFormValidator.disableButtonState();
+
+  //вызываю функцию очистки формы от ошибок валидации
+  clearErrors(userEditPopup);
+
   //вызываю функцию открытия попапа
   openPopup(userEditPopup);
+}
+
+/**
+ * обработчик попапа добавления фото
+ * вызывает функции очистки формы, ошибок валидации
+ * и вызывает функцию открытия попапа
+ */
+function openphotoAddPopup() {
+  //вызываю метод деактивации кнопки сабмит
+  photoAddPopupFormValidator.disableButtonState();
+
+  //вызываю функцию очистки формы от ошибок валидации
+  clearErrors(photoAddPopup);
+
+  //очищаю инпуты формы
+  clearForm(photoAddPopup);
+
+  //вызываю функцию открытия попапа
+  openPopup(photoAddPopup);
 }
 
 /**
@@ -215,18 +261,14 @@ function handleAddPhotoForm (event) {
 
   //закрываю попап
   closePopup(photoAddPopup);
-  
-  //очищаю инпуты формы
-  checkOpenedAddPhotoPopup(photoAddPopup);
 
   //отрисовываю на странице новую карточку
   addCard(newCard);
 };
 
-
 //добавляю слушателей на кнопки открытия попапов
 profileEditButton.addEventListener('click', openEditProfilePopup);
-profileAddButton.addEventListener('click', () => {openPopup(photoAddPopup)});
+profileAddButton.addEventListener('click', openphotoAddPopup);
 
 //добавляю слушателей на кнопки закрытия попапов
 userEditPopupCloseButton.addEventListener('click', () => {closePopup(userEditPopup)});
@@ -239,9 +281,4 @@ profileForm.addEventListener('submit', handleEditProfileForm);
 //добавляю слушателя на кнопку Добавить в попапе add-photo pop-up
 photoForm.addEventListener('submit', handleAddPhotoForm);
 
-const userEditPopupFormValidator = new FormValidator(validationConfig, '[name="edit-popup"]');
-//const photoAddPopupFormValidator = new FormValidator();
-
-userEditPopupFormValidator.enableValidation();
-//photoAddPopupFormValidator.enableValidation();
 })();
