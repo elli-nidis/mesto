@@ -1,4 +1,5 @@
 import {Card} from './Card.js';
+import {FormValidator} from './FormValidator.js';
 
 (function() {
   
@@ -39,6 +40,18 @@ const templateCard = document.querySelector('.template-card').content;
 
 //нахожу место, где будут отрисовываться карточки
 const photoGrid = document.querySelector('.photo-grid');
+
+
+
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible',
+  popupError: '.popup__error'
+};
 
 /**
 * функция отрисовки новой (добавленной вручную) карточки на странице
@@ -225,4 +238,9 @@ profileForm.addEventListener('submit', handleEditProfileForm);
 //добавляю слушателя на кнопку Добавить в попапе add-photo pop-up
 photoForm.addEventListener('submit', handleAddPhotoForm);
 
+const userEditPopupFormValidator = new FormValidator(validationConfig, '[name="edit-popup"]');
+//const photoAddPopupFormValidator = new FormValidator();
+
+userEditPopupFormValidator.enableValidation();
+//photoAddPopupFormValidator.enableValidation();
 })();
