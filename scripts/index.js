@@ -65,15 +65,30 @@ photoAddPopupFormValidator.enableValidation();
 * функция отрисовки новой (добавленной вручную) карточки на странице
 */
 function addCard(data) {
-  const card = new Card(data, templateCard, openPopup);
+  const card = new Card(data, templateCard, handleCardClick);
   photoGrid.prepend(card.createCard());
 };
 
 //отрисовываю карточки при загрузке страницы
 initialCards.forEach((data) => {
-  const card = new Card(data, templateCard, openPopup);
+  const card = new Card(data, templateCard, handleCardClick);
   photoGrid.append(card.createCard());
 });
+
+
+/**
+* функция обработки клика по карточке
+*/
+function handleCardClick(link, name) {
+  //устанавливаю значения полей элементов открываемого попапа
+  photoZoomImg.src = link;
+  photoZoomImg.alt = name;
+  photoZoomTitle.textContent = name;
+
+  //открываю попап
+  openPopup(photoZoomPopup);
+};
+
 
 /**
  * функция нахождения открытого попапа. Возвращает его тег
@@ -112,7 +127,7 @@ function checkOverlayClick(evt) {
 /**
  * функция добавления слушателя на клавишу esc
  */
-function setEventListenerWindow() {
+function setEventListenerEsc() {
   document.addEventListener('keydown', checkEscapeButtonClick);
 };
 
@@ -126,7 +141,7 @@ function setEventListenerOverlay(popup) {
 /**
  * функция удаления слушателя с клавиши esc
  */
-function removeEventListenerWindow() {
+function removeEventListenerEsc() {
   document.removeEventListener('keydown', checkEscapeButtonClick);
 };
 
@@ -151,7 +166,7 @@ function openPopup (popup) {
   popup.classList.add('popup_opened');
 
   //вызываю функцию добавления слушателя на клавишу esc
-  setEventListenerWindow();
+  setEventListenerEsc();
 
   //вызываю функцию добавления слушателя на оверлей
   setEventListenerOverlay(popup);
@@ -164,7 +179,7 @@ function closePopup(popup) {
   popup.classList.remove('popup_opened');
 
   //удаляю слушателя клавиши esc
-  removeEventListenerWindow();
+  removeEventListenerEsc();
 
   //удаляю слушателя с оверлея
   removeEventListenerOverlay(popup);
