@@ -13,10 +13,8 @@ const userEditPopup = document.querySelector('.popup_type_edit-profile');
 const photoAddPopup = document.querySelector('.popup_type_add-photo');
 const photoZoomPopup = document.querySelector('.popup_type_photo-zoom');
 
-//нахожу кнопки, закрывающие попапы
-const userEditPopupCloseButton = userEditPopup.querySelector('.close-button');
-const photoAddPopupCloseButton = photoAddPopup.querySelector('.close-button');
-const photoZoomPopupCloseButton = photoZoomPopup.querySelector('.close-button');
+// нахожу все крестики проекта (close button) по универсальному селектору
+const closeButtons = document.querySelectorAll('.popup__close-button');
 
 //нахожу поля для записи данных юзера в профиле и в попапе редактирования профиля
 const profileUserName = document.querySelector('.profile__user-name');
@@ -50,7 +48,7 @@ const validationConfig = {
   inactiveButtonClass: 'popup__button_disabled',
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__error_visible',
-  popupError: '.popup__error'
+  errorField: '.popup__error'
 };
 
 //создаю экземпляры классов валидации для каждой формы
@@ -62,19 +60,25 @@ userEditPopupFormValidator.enableValidation();
 photoAddPopupFormValidator.enableValidation();
 
 /**
+* функция создания карточки
+*/
+function createCard(data) {
+  const card = new Card(data, templateCard, handleCardClick);
+  const cardElement = card.createCard();
+  return cardElement
+}
+
+/**
 * функция отрисовки новой (добавленной вручную) карточки на странице
 */
 function addCard(data) {
-  const card = new Card(data, templateCard, handleCardClick);
-  photoGrid.prepend(card.createCard());
+  photoGrid.prepend(createCard(data));
 };
 
 //отрисовываю карточки при загрузке страницы
 initialCards.forEach((data) => {
-  const card = new Card(data, templateCard, handleCardClick);
-  photoGrid.append(card.createCard());
+  photoGrid.append(createCard(data));
 });
-
 
 /**
 * функция обработки клика по карточке
@@ -88,7 +92,6 @@ function handleCardClick(link, name) {
   //открываю попап
   openPopup(photoZoomPopup);
 };
-
 
 /**
  * функция нахождения открытого попапа. Возвращает его тег
@@ -186,24 +189,6 @@ function closePopup(popup) {
 };
 
 /**
- * функция очистки формы от ошибок валидации
- */
-function clearErrors(popup) {
-  //нахожу поля инпуты и поля с текстом ошибок, которые нужно очистить
-  const inputElements = Array.from(popup.querySelectorAll(validationConfig.inputSelector));
-  const errorElements = Array.from(popup.querySelectorAll(validationConfig.popupError));
-
-  //для каждого инпута убираю стили для невалидного поля
-  inputElements.forEach((input) => input.classList.remove(validationConfig.inputErrorClass));
-
-  //для каждого поля с текстом ошибки скрываю это поле
-  errorElements.forEach((error) => {
-    error.textContent = '';
-    error.classList.remove(validationConfig.errorClass);
-  });
-};
-
-/**
  * обработчик попапа редактирования профиля
  * заполняет значения в инпутах формы и вызывает функцию
  * открытия попапа
@@ -213,11 +198,8 @@ function openEditProfilePopup() {
   inputUserName.value = profileUserName.textContent;
   inputUserOccupation.value = profileUserOccupation.textContent;
 
-  //вызываю метод деактивации кнопки сабмит
-  userEditPopupFormValidator.disableButtonState();
-
   //вызываю функцию очистки формы от ошибок валидации
-  clearErrors(userEditPopup);
+  userEditPopupFormValidator.resetValidation();
 
   //вызываю функцию открытия попапа
   openPopup(userEditPopup);
@@ -229,11 +211,8 @@ function openEditProfilePopup() {
  * и вызывает функцию открытия попапа
  */
 function openphotoAddPopup() {
-  //вызываю метод деактивации кнопки сабмит
-  photoAddPopupFormValidator.disableButtonState();
-
   //вызываю функцию очистки формы от ошибок валидации
-  clearErrors(photoAddPopup);
+  photoAddPopupFormValidator.resetValidation();
 
   //очищаю инпуты формы
   clearForm(photoAddPopup);
@@ -286,9 +265,13 @@ profileEditButton.addEventListener('click', openEditProfilePopup);
 profileAddButton.addEventListener('click', openphotoAddPopup);
 
 //добавляю слушателей на кнопки закрытия попапов
-userEditPopupCloseButton.addEventListener('click', () => {closePopup(userEditPopup)});
-photoAddPopupCloseButton.addEventListener('click', () => {closePopup(photoAddPopup)});
-photoZoomPopupCloseButton.addEventListener('click', () => {closePopup(photoZoomPopup)});
+closeButtons.forEach((button) => {
+  // нахожу попап-родителя для крестика
+  const popup = button.closest('.popup');
+
+  // устанавливаю обработчик закрытия на крестик
+  button.addEventListener('click', () => closePopup(popup));
+});
 
 //добавляю слушателя на кнопку Сохранить в попапе user-edit pop-up
 profileForm.addEventListener('submit', handleEditProfileForm);

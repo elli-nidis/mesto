@@ -6,6 +6,7 @@ class FormValidator {
     this._inactiveButtonClass = data.inactiveButtonClass;
     this._inputErrorClass = data.inputErrorClass;
     this._errorClass = data.errorClass;
+    this._errorField = data.errorField;
     this._form = document.querySelector(form);
   }
 
@@ -18,7 +19,7 @@ class FormValidator {
   };
 
   //метод disableButtonState деактивирует кнопку сабмит
-  disableButtonState() {
+  _disableButtonState() {
     //добавляю класс модификатора, устанавливаю деактивирующий кнопку атрибут
     this._buttonElement.classList.add(this._inactiveButtonClass);
     this._buttonElement.setAttribute('disabled', true);
@@ -35,8 +36,8 @@ class FormValidator {
   _toggleButtonState() {
     if(this._hasInvalidInput()) {
       //если в форме есть невалидное поле,
-      // делаю кнопку неактивной - вызываю для этого функцию disableButtonState
-      this.disableButtonState();
+      // делаю кнопку неактивной - вызываю для этого функцию _disableButtonState
+      this._disableButtonState();
     }
     else {
       //иначе делаю кнопку активной - вызываю для этого функцию activateBUttonState
@@ -106,20 +107,8 @@ class FormValidator {
     }
   };
 
-  //метод enableValidation включает валидацию
-  enableValidation(_form) {
-    //отменяю стандартное поведение формы при сабмите
-    this._form.addEventListener('submit', evt => evt.preventDefault());
-
-    //нахожу все инпуты в текущей форме
-    this._inputList = Array.from(this._form.querySelectorAll(this._inputSelector));
-
-    //нахожу в текущей форме кнопку с функцией submit
-    this._buttonElement = this._form.querySelector(this._submitButtonSelector);
-
-    //вызываю метод _toggleButtonState, который управляет состоянием кнопки сабмит
-    this._toggleButtonState();
-
+   //прохожусь по инпутам, навешиваю слушателя ошибок по событию ввода символа
+  _setEventListeners() {
     //прохожусь по инпутам, навешиваю слушателя ошибок по событию ввода символа
     this._inputList.forEach(input => {
       input.addEventListener('input', evt => {
@@ -130,6 +119,41 @@ class FormValidator {
         this._toggleButtonState(input);
       })
     });
+  };
+
+  //метод resetValidation очищает ошибки
+  resetValidation() {
+    //деактивирую кнопку сабмит
+    this._disableButtonState();
+
+    //для каждого инпута убираю стили для невалидного поля
+    this._inputList.forEach(input => {
+      input.classList.remove(this._inputErrorClass);
+    })
+
+    //для каждого поля с текстом ошибки скрываю это поле
+    this._errorList.forEach((error) => {
+      error.textContent = '';
+      error.classList.remove(this._errorClass);
+    });
+  };
+
+  //метод enableValidation включает валидацию
+  enableValidation(_form) {
+    //отменяю стандартное поведение формы при сабмите
+    this._form.addEventListener('submit', evt => evt.preventDefault());
+
+    //нахожу все инпуты в текущей форме
+    this._inputList = Array.from(this._form.querySelectorAll(this._inputSelector));
+    
+    //нахожу все поля вывода ошибок в текущей форме
+    this._errorList = Array.from(this._form.querySelectorAll(this._errorField));
+
+    //нахожу в текущей форме кнопку с функцией submit
+    this._buttonElement = this._form.querySelector(this._submitButtonSelector);
+
+    //вызываю метод, который устанавливает слушателей ошибок по событию ввода символа
+    this._setEventListeners();
 };
 }
 
