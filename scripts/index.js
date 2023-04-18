@@ -1,6 +1,7 @@
 import {initialCards} from './constants.js';
 import {Card} from './Card.js';
 import {FormValidator} from './FormValidator.js';
+import {Section} from './Section.js';
 
 (function() {
   
@@ -38,7 +39,7 @@ const photoZoomTitle = photoZoomPopup.querySelector('.photo__title');
 const templateCard = document.querySelector('.template-card').content;
 
 //нахожу место, где будут отрисовываться карточки
-const photoGrid = document.querySelector('.photo-grid');
+//const photoGrid = document.querySelector('.photo-grid');
 
 //объект с селекторами
 const validationConfig = {
@@ -48,7 +49,9 @@ const validationConfig = {
   inactiveButtonClass: 'popup__button_disabled',
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__error_visible',
-  errorField: '.popup__error'
+  errorField: '.popup__error',
+  //добавила 18.04.2023 !!!!!!!!!!!! Убрать отсюда, т.к. это не валидация
+  photoGrid: '.photo-grid'
 };
 
 //создаю экземпляры классов валидации для каждой формы
@@ -75,10 +78,29 @@ function addCard(data) {
   photoGrid.prepend(createCard(data));
 };
 
+// //отрисовываю карточки при загрузке страницы
+// initialCards.forEach((data) => {
+//   photoGrid.append(createCard(data));
+// });
+
+/**
+* функция отрисовки карточки на странице
+*/
+function renderCard(cardData) {
+  const cardElement = createCard(cardData)
+  section.addItem(cardElement);
+}
+
 //отрисовываю карточки при загрузке страницы
-initialCards.forEach((data) => {
-  photoGrid.append(createCard(data));
-});
+const section = new Section({
+  items: initialCards,
+  renderer: renderCard,
+}, validationConfig.photoGrid
+);
+
+section.renderItems();
+
+
 
 /**
 * функция обработки клика по карточке
