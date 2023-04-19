@@ -2,6 +2,7 @@ import {initialCards} from './constants.js';
 import {Card} from './Card.js';
 import {FormValidator} from './FormValidator.js';
 import {Section} from './Section.js';
+import { PopupWithImage } from './PopupWithImage.js';
 
 (function() {
   
@@ -12,7 +13,7 @@ const profileAddButton = document.querySelector('.profile__add-button');
 //нахожу попапы
 const userEditPopup = document.querySelector('.popup_type_edit-profile');
 const photoAddPopup = document.querySelector('.popup_type_add-photo');
-const photoZoomPopup = document.querySelector('.popup_type_photo-zoom');
+//const photoZoomPopup = document.querySelector('.popup_type_photo-zoom');
 
 // нахожу все крестики проекта (close button) по универсальному селектору
 const closeButtons = document.querySelectorAll('.popup__close-button');
@@ -32,8 +33,8 @@ const profileForm = document.querySelector('[name="edit-popup"]');
 const photoForm = document.querySelector('[name="add-popup"]');
 
 //нахожу элементы модального окна просмотра фотографии
-const photoZoomImg = photoZoomPopup.querySelector('.photo__img');
-const photoZoomTitle = photoZoomPopup.querySelector('.photo__title');
+//const photoZoomImg = photoZoomPopup.querySelector('.photo__img');
+//const photoZoomTitle = photoZoomPopup.querySelector('.photo__title');
 
 // устанавливаю шаблон для карточки
 const templateCard = document.querySelector('.template-card').content;
@@ -100,28 +101,24 @@ const section = new Section({
 
 section.renderItems();
 
-
+//создаю экземпляр класса PopupWithImage
+const photoZoomPopup = new PopupWithImage('.popup_type_photo-zoom');
 
 /**
 * функция обработки клика по карточке
 */
 function handleCardClick(link, name) {
-  //устанавливаю значения полей элементов открываемого попапа
-  photoZoomImg.src = link;
-  photoZoomImg.alt = name;
-  photoZoomTitle.textContent = name;
-
-  //открываю попап
-  openPopup(photoZoomPopup);
+  //вызываю его метод open класса PopupWithImage
+  photoZoomPopup.open(link, name);
 };
 
-/**
- * функция нахождения открытого попапа. Возвращает его тег
- */
-function findPopupToClose() {
-  const popup = document.querySelector('.popup_opened');
-  return popup;
-}
+// /**
+//  * функция нахождения открытого попапа. Возвращает его тег
+//  */
+// function findPopupToClose() {
+//   const popup = document.querySelector('.popup_opened');
+//   return popup;
+// }
 
 // /**
 //  * функция проверки нажатия клавиши esc
@@ -136,46 +133,46 @@ function findPopupToClose() {
 //   }
 // };
 
-/**
- * функция проверки клика по оверлею
- */
-function checkOverlayClick(evt) {
-  if (evt.target.classList.contains('popup')) {
-    //если произошёл клик на оверлей, нахожу открытый попап через функцию findPopupToClose
-    const popup = findPopupToClose();
+// /**
+//  * функция проверки клика по оверлею
+//  */
+// function checkOverlayClick(evt) {
+//   if (evt.target.classList.contains('popup')) {
+//     //если произошёл клик на оверлей, нахожу открытый попап через функцию findPopupToClose
+//     const popup = findPopupToClose();
 
-    //закрываю открытый попап
-    closePopup(popup);
-  }
-};
+//     //закрываю открытый попап
+//     closePopup(popup);
+//   }
+// };
 
-/**
- * функция добавления слушателя на клавишу esc
- */
-function setEventListenerEsc() {
-  document.addEventListener('keydown', checkEscapeButtonClick);
-};
+// /**
+//  * функция добавления слушателя на клавишу esc
+//  */
+// function setEventListenerEsc() {
+//   document.addEventListener('keydown', checkEscapeButtonClick);
+// };
 
-/**
- * функция добавления слушателя на overlay
- */
-function setEventListenerOverlay(popup) {
-  popup.addEventListener('click', checkOverlayClick);
-};
+// /**
+//  * функция добавления слушателя на overlay
+//  */
+// function setEventListenerOverlay(popup) {
+//   popup.addEventListener('click', checkOverlayClick);
+// };
 
-/**
- * функция удаления слушателя с клавиши esc
- */
-function removeEventListenerEsc() {
-  document.removeEventListener('keydown', checkEscapeButtonClick);
-};
+// /**
+//  * функция удаления слушателя с клавиши esc
+//  */
+// function removeEventListenerEsc() {
+//   document.removeEventListener('keydown', checkEscapeButtonClick);
+// };
 
-/**
- * функция удаления слушателя с overlay
- */
-function removeEventListenerOverlay(popup) {
-  popup.removeEventListener('click', checkOverlayClick);
-};
+// /**
+//  * функция удаления слушателя с overlay
+//  */
+// function removeEventListenerOverlay(popup) {
+//   popup.removeEventListener('click', checkOverlayClick);
+// };
 
 /**
  * функция очистки полей формы
@@ -184,31 +181,31 @@ function clearForm(popup) {
   photoForm.reset();
 };
 
-/**
- * функция открытия попапа
- */
-function openPopup (popup) {
-  // popup.classList.add('popup_opened');
+// /**
+//  * функция открытия попапа
+//  */
+// function openPopup (popup) {
+//   // popup.classList.add('popup_opened');
 
-  //вызываю функцию добавления слушателя на клавишу esc
-  setEventListenerEsc();
+//   //вызываю функцию добавления слушателя на клавишу esc
+//   setEventListenerEsc();
 
-  //вызываю функцию добавления слушателя на оверлей
-  setEventListenerOverlay(popup);
-};
+//   //вызываю функцию добавления слушателя на оверлей
+//   setEventListenerOverlay(popup);
+// };
 
-/**
- * функция закрытия попапа
- */
-function closePopup(popup) {
-  // popup.classList.remove('popup_opened');
+// /**
+//  * функция закрытия попапа
+//  */
+// function closePopup(popup) {
+//   // popup.classList.remove('popup_opened');
 
-  //удаляю слушателя клавиши esc
-  removeEventListenerEsc();
+//   //удаляю слушателя клавиши esc
+//   removeEventListenerEsc();
 
-  //удаляю слушателя с оверлея
-  removeEventListenerOverlay(popup);
-};
+//   //удаляю слушателя с оверлея
+//   removeEventListenerOverlay(popup);
+// };
 
 /**
  * обработчик попапа редактирования профиля
@@ -224,7 +221,7 @@ function openEditProfilePopup() {
   userEditPopupFormValidator.resetValidation();
 
   //вызываю функцию открытия попапа
-  openPopup(userEditPopup);
+  //openPopup(userEditPopup);
 }
 
 /**
@@ -240,7 +237,7 @@ function openphotoAddPopup() {
   clearForm(photoAddPopup);
 
   //вызываю функцию открытия попапа
-  openPopup(photoAddPopup);
+  //openPopup(photoAddPopup);
 }
 
 /**
@@ -287,12 +284,12 @@ profileEditButton.addEventListener('click', openEditProfilePopup);
 profileAddButton.addEventListener('click', openphotoAddPopup);
 
 //добавляю слушателей на кнопки закрытия попапов
-closeButtons.forEach((button) => {
-  // нахожу попап-родителя для крестика
-  const popup = button.closest('.popup');
+// closeButtons.forEach((button) => {
+//   // нахожу попап-родителя для крестика
+//   // const popup = button.closest('.popup');
 
-  // устанавливаю обработчик закрытия на крестик
-//   button.addEventListener('click', () => closePopup(popup));
+//   // устанавливаю обработчик закрытия на крестик
+//   // button.addEventListener('click', () => closePopup(popup));
 // });
 
 //добавляю слушателя на кнопку Сохранить в попапе user-edit pop-up
@@ -300,5 +297,6 @@ profileForm.addEventListener('submit', handleEditProfileForm);
 
 //добавляю слушателя на кнопку Добавить в попапе add-photo pop-up
 photoForm.addEventListener('submit', handleAddPhotoForm);
+
 
 })();
