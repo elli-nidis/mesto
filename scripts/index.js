@@ -95,7 +95,7 @@ function renderCard(cardData) {
 const section = new Section({
   items: initialCards,
   renderer: renderCard,
-}, validationConfig.photoGrid
+}, validationConfig.photoGrid //!!!!!!!!!!!! убрать объект для валидации
 );
 
 section.renderItems();
@@ -123,18 +123,18 @@ function findPopupToClose() {
   return popup;
 }
 
-/**
- * функция проверки нажатия клавиши esc
- */
-function checkEscapeButtonClick(evt) {
-  if (evt.key === 'Escape') {
-    //если нажата клавиша esc, то нахожу открытый попап через функцию findPopupToClose
-    const popup = findPopupToClose();
+// /**
+//  * функция проверки нажатия клавиши esc
+//  */
+// function checkEscapeButtonClick(evt) {
+//   if (evt.key === 'Escape') {
+//     //если нажата клавиша esc, то нахожу открытый попап через функцию findPopupToClose
+//     const popup = findPopupToClose();
 
-    //закрываю открытый попап
-    closePopup(popup);
-  }
-};
+//     //закрываю открытый попап
+//     closePopup(popup);
+//   }
+// };
 
 /**
  * функция проверки клика по оверлею
@@ -188,7 +188,7 @@ function clearForm(popup) {
  * функция открытия попапа
  */
 function openPopup (popup) {
-  popup.classList.add('popup_opened');
+  // popup.classList.add('popup_opened');
 
   //вызываю функцию добавления слушателя на клавишу esc
   setEventListenerEsc();
@@ -201,7 +201,7 @@ function openPopup (popup) {
  * функция закрытия попапа
  */
 function closePopup(popup) {
-  popup.classList.remove('popup_opened');
+  // popup.classList.remove('popup_opened');
 
   //удаляю слушателя клавиши esc
   removeEventListenerEsc();
@@ -292,8 +292,8 @@ closeButtons.forEach((button) => {
   const popup = button.closest('.popup');
 
   // устанавливаю обработчик закрытия на крестик
-  button.addEventListener('click', () => closePopup(popup));
-});
+//   button.addEventListener('click', () => closePopup(popup));
+// });
 
 //добавляю слушателя на кнопку Сохранить в попапе user-edit pop-up
 profileForm.addEventListener('submit', handleEditProfileForm);
