@@ -5,24 +5,24 @@ class Popup {
     this._closeButton = this._popupElement.querySelector('.popup__close-button');
   }
   
+  //метод _handleEscClose закрывает попап, если нажат esc
   _handleEscClose(evt) {
-    console.log('работает _handleEscClose');
     if (evt.key === 'Escape') {
       //если нажата клавиша esc, то закрываю открытый попап 
       this.close();
     }
   };
 
+  //метод _handleOverlayClose закрывает попап, если произошёл клик по оверлею
   _handleOverlayClose(evt) {
-    console.log('работает _handleOverlayClose');
     if (evt.target.classList.contains('popup')) {
       ///если произошёл клик на оверлей, то закрываю попап 
       this.close();
     }
   };
 
+  //метод setEventListeners устанавливает слушателей
   setEventListeners() {
-    console.log('зашел в листнер');
     //устанавливаю слушателя на esc
     document.addEventListener('keydown', this._handleEscClose);
 
@@ -33,8 +33,8 @@ class Popup {
     this._popupElement.addEventListener('click', this._handleOverlayClose.bind(this));
   }
 
-  removeEventListeners() {
-    console.log('зашел в удаление листнера');
+  //метод removeEventListeners удаляет слушателей
+  _removeEventListeners() {
     //удаляю слушателя с esc
     document.removeEventListener('keydown', this._handleEscClose);
 
@@ -45,19 +45,21 @@ class Popup {
     this._popupElement.removeEventListener('click', this._handleOverlayClose.bind(this));
   }
 
+  //метод open открывает попап
   open() {
     this._popupElement.classList.add('popup_opened');
-    
+
     //устанавливаю слушателей: крестик, esc, оверлей
     this.setEventListeners();
   }
 
+  //метод close закрывает попап
   close() {
-    console.log('работает close');
+    //console.log('работает close');
     this._popupElement.classList.remove('popup_opened');
 
     //удаляю слушателей с крестика, esc, оверлея
-    this.removeEventListeners();
+    this._removeEventListeners();
   }
   
 }

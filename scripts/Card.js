@@ -1,7 +1,7 @@
 class Card {
   constructor (data, templateCard, handleCardClick) {
-    this._link = data.link;
-    this._name = data.name;
+    this._link = data.link || data.photoLink;
+    this._name = data.name || data.photoName;
     this._templateCard = templateCard;
     this._handleCardClick = handleCardClick;
   }

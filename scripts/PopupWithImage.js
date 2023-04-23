@@ -1,12 +1,13 @@
 import { Popup } from "./Popup.js";
 
 class PopupWithImage extends Popup {
-  constructor(popupSelector,) {
+  constructor(popupSelector) {
     super(popupSelector);
     this._photoZoomImg = this._popupElement.querySelector('.photo__img');
     this._photoZoomTitle = this._popupElement.querySelector('.photo__title');
   }
 
+  // метод open перезаписывает родительский метод: устанавливает ссылку и подпись изображения
   open(link, name) {
     //устанавливаю значения для картинки
     this._photoZoomImg.src = link;
@@ -15,8 +16,6 @@ class PopupWithImage extends Popup {
 
     //открываю попап через метод родителя
     super.open();
-
-    console.log(this._closeButton);
   }
 
 }
