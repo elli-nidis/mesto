@@ -20,6 +20,10 @@ const templateCard = document.querySelector('.template-card').content;
 const userEditPopupFormValidator = new FormValidator(validationConfig, '[name="edit-popup"]');
 const photoAddPopupFormValidator = new FormValidator(validationConfig, '[name="add-popup"]');
 
+//нахожу поля формы попапа редактирования профиля
+const userName = document.querySelector('.popup__input_type_user-name');
+const userOccupation = document.querySelector('.popup__input_type_user-occupation');
+
 //запускаю валидацию для каждой формы
 userEditPopupFormValidator.enableValidation();
 photoAddPopupFormValidator.enableValidation();
@@ -30,7 +34,6 @@ photoAddPopupFormValidator.enableValidation();
 function createCard(data) {
   const card = new Card(data, templateCard, handleCardClick);
   const cardElement = card.createCard();
-  console.log(cardElement);
   return cardElement
 }
 
@@ -82,10 +85,26 @@ function handleCardClick(link, name) {
   photoZoomPopup.open(link, name);
 };
 
+/**
+* функция установки данных юзера в попапе редактирования профиля при открытии
+*/
+function setUserData() {
+  //беру данные из метода getUserInfo() класса UserInfo
+  const userData = userInfo.getUserInfo();
+  userName.value = userData.userName;
+  userOccupation.value = userData.userOccupation;
+};
+
+
 
 //добавляю слушателей на кнопки открытия попапов
 profileEditButton.addEventListener('click', () => {
+  //устанавливаю данные
+  setUserData();
+
+  //открываю попап
   userEditPopup.open();
+
   //вызываю функцию очистки формы от ошибок валидации
   userEditPopupFormValidator.resetValidation();
 });
