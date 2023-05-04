@@ -1,10 +1,11 @@
-import {initialCards, validationConfig} from '../utils/constants.js';
+import {apiConfig, initialCards, validationConfig} from '../utils/constants.js';
 import {Card} from '../components/Card.js';
 import {FormValidator} from '../components/FormValidator.js';
 import {Section} from '../components/Section.js';
 import { PopupWithImage } from '../components/PopupWithImage.js';
 import { PopupWithForm } from '../components/PopupWithForm.js';
 import { UserInfo } from '../components/UserInfo.js';
+import { Api } from '../components/Api.js';
 import './index.css';
 
 (function() {
@@ -45,9 +46,20 @@ function renderCard(cardData) {
   section.addItem(cardElement);
 }
 
+
+//******* создаю экземпляр класса Api *****
+const api = new Api({
+  baseUrl: `${apiConfig.baseUrl}/cards`,
+  headers: {
+    authorization: apiConfig.token,
+    'Content-Type': 'application/json'
+  }
+}); 
+
 //отрисовываю карточки при загрузке страницы
 const section = new Section({
-  items: initialCards,
+  // items: initialCards,
+  items: api.getInitialCards(),
   renderer: renderCard,
 }, '.photo-grid'
 );

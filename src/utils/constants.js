@@ -37,4 +37,10 @@ const validationConfig = {
   errorField: '.popup__error',
 };
 
-export {initialCards, validationConfig};
+//объект с настройками api
+const apiConfig = {
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-65',
+  token: 'a5c45cd6-8652-4e04-a6db-ae4adf79f1fa',
+}
+
+export {initialCards, validationConfig, apiConfig};
