@@ -1,6 +1,7 @@
 .profile {
   width: 100%;
   display: grid;
+  position: relative;
   grid-template-columns: 120px auto 150px;
   column-gap: 30px;
   align-items: center;

@@ -1,4 +1,4 @@
-import {apiConfig, initialCards, validationConfig} from '../utils/constants.js';
+import {apiConfig, validationConfig} from '../utils/constants.js';
 import {Card} from '../components/Card.js';
 import {FormValidator} from '../components/FormValidator.js';
 import {Section} from '../components/Section.js';
@@ -13,6 +13,12 @@ import './index.css';
 //нахожу кнопки, открывающие попапы
 const profileEditButton = document.querySelector('.profile__edit-button');
 const profileAddButton = document.querySelector('.profile__add-button');
+const avatarEditButton = document.querySelector('.profile__edit-avatar');
+
+//нахожу данные пользователя
+const profileImg = document.querySelector('.profile__avatar');
+const profileUserName = document.querySelector('.profile__user-name');
+const profileUserOccupation = document.querySelector('.profile__user-occupation');
 
 // устанавливаю шаблон для карточки
 const templateCard = document.querySelector('.template-card').content;
@@ -20,6 +26,7 @@ const templateCard = document.querySelector('.template-card').content;
 //создаю экземпляры классов валидации для каждой формы
 const userEditPopupFormValidator = new FormValidator(validationConfig, '[name="edit-popup"]');
 const photoAddPopupFormValidator = new FormValidator(validationConfig, '[name="add-popup"]');
+const avatarUpdatePopupFormValidator = new FormValidator(validationConfig, '[name="update-avatar"]');
 
 //нахожу поля формы попапа редактирования профиля
 const userName = document.querySelector('.popup__input_type_user-name');
@@ -28,6 +35,7 @@ const userOccupation = document.querySelector('.popup__input_type_user-occupatio
 //запускаю валидацию для каждой формы
 userEditPopupFormValidator.enableValidation();
 photoAddPopupFormValidator.enableValidation();
+avatarUpdatePopupFormValidator.enableValidation();
 
 /**
 * функция создания карточки
@@ -47,16 +55,31 @@ function renderCard(cardData) {
 }
 
 
-//******* создаю экземпляр класса Api *****
+//создаю экземпляр класса Api
 const api = new Api({
-  baseUrl: `${apiConfig.baseUrl}/cards`,
+  baseUrl: apiConfig.baseUrl,
   headers: {
     authorization: apiConfig.token,
     'Content-Type': 'application/json'
   }
 }); 
 
-//отрисовываю карточки при загрузке страницы
+/**
+* функция устанавливает данные пользователя при загрузке страницы
+*/
+function renderUser(){
+  api.getUser()
+  .then(data => {
+    profileImg.src = data.avatar;
+    profileUserName.textContent = data.name;
+    profileUserOccupation.textContent = data.about;
+  })
+}
+
+//устанавливаю данные профиля, полученные с сервера
+renderUser();
+
+//создаю экземпляр класса Section
 const section = new Section({
   // items: initialCards,
   items: api.getInitialCards(),
@@ -64,6 +87,7 @@ const section = new Section({
 }, '.photo-grid'
 );
 
+//отрисовываю карточки при загрузке страницы
 section.renderItems();
 
 //создаю экземпляр класса UserInfo (попап профиля)
@@ -86,8 +110,18 @@ const photoAddPopup = new PopupWithForm({
 const userEditPopup = new PopupWithForm({
   popupSelector: '.popup_type_edit-profile',
   handleFormSubmit: (data) => {
-    userInfo.setUserInfo(data);
+    //userInfo.setUserInfo(data);
+    api.patchUser(data);
+    renderUser();
     userEditPopup.close()}});
+
+//создаю экземпляр класса PopupWithForm для попапа редактирования аватара
+const avatarUpdatePopup = new PopupWithForm({
+  popupSelector: '.popup_type_update-avatar',
+  handleFormSubmit: (data) => {
+    api.patchAvatar(data);
+    renderUser();
+    avatarUpdatePopup.close()}});
 
 /**
 * функция обработки клика по карточке
@@ -125,6 +159,11 @@ profileAddButton.addEventListener('click', () => {
   photoAddPopup.open();
   //вызываю функцию очистки формы от ошибок валидации
   photoAddPopupFormValidator.resetValidation();
+});
+
+avatarEditButton.addEventListener('click', () => {
+  avatarUpdatePopup.open();
+  avatarUpdatePopupFormValidator.resetValidation();
 });
 
 })();

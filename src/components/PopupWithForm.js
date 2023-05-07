@@ -18,6 +18,7 @@ class PopupWithForm extends Popup {
     //создаю пустой объект, записываю в него данные из инпутов формы
     const inputs = {};
     this._inputList.forEach(input => inputs[input.name] = input.value);
+    console.log({inputs});
 
     //возвращаю объект
     return inputs;

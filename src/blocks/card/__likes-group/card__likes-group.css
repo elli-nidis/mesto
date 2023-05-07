@@ -1,0 +1,6 @@
+.card__likes-group {
+  width: 100%;
+  display: grid;
+  row-gap: 3px;
+  align-items: center;
+}

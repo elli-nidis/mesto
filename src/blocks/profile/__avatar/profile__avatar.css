@@ -2,6 +2,15 @@
   width: 120px;
   height: 120px;
   border-radius: 50%;
+  object-fit: cover;
+  position: relative;
+  visibility: visible;
+  z-index: 1;
+}
+
+.profile__avatar:hover {
+  z-index: 0;
+  visibility: hidden;
 }
 
 @media screen and (max-width: 850px) {
