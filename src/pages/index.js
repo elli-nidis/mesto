@@ -32,16 +32,52 @@ const avatarUpdatePopupFormValidator = new FormValidator(validationConfig, '[nam
 const userName = document.querySelector('.popup__input_type_user-name');
 const userOccupation = document.querySelector('.popup__input_type_user-occupation');
 
+let userId = undefined;
+
 //запускаю валидацию для каждой формы
 userEditPopupFormValidator.enableValidation();
 photoAddPopupFormValidator.enableValidation();
 avatarUpdatePopupFormValidator.enableValidation();
 
+
+
+//создаю экземпляр класса Api
+const api = new Api({
+  baseUrl: apiConfig.baseUrl,
+  headers: {
+    authorization: apiConfig.token,
+    'Content-Type': 'application/json'
+  }
+}); 
+
+
+async function getUserId() {
+  const user = await api.getUser().then(data => {return data});
+   return user;
+}
+
+/**
+* функция устанавливает данные пользователя при загрузке страницы
+*/
+function renderUser(){
+  api.getUser()
+    .then(data => {
+      profileImg.src = data.avatar;
+      profileUserName.textContent = data.name;
+      profileUserOccupation.textContent = data.about;
+      userId = data._id;
+  })
+}
+
+//устанавливаю данные профиля, полученные с сервера
+renderUser();
+
+
 /**
 * функция создания карточки
 */
 function createCard(data) {
-  const card = new Card(data, templateCard, handleCardClick);
+  const card = new Card(data, templateCard, handleCardClick, handleLikeClick, handleDeleteLikeClick, userId);
   const cardElement = card.createCard();
   return cardElement
 }
@@ -54,30 +90,6 @@ function renderCard(cardData) {
   section.addItem(cardElement);
 }
 
-
-//создаю экземпляр класса Api
-const api = new Api({
-  baseUrl: apiConfig.baseUrl,
-  headers: {
-    authorization: apiConfig.token,
-    'Content-Type': 'application/json'
-  }
-}); 
-
-/**
-* функция устанавливает данные пользователя при загрузке страницы
-*/
-function renderUser(){
-  api.getUser()
-  .then(data => {
-    profileImg.src = data.avatar;
-    profileUserName.textContent = data.name;
-    profileUserOccupation.textContent = data.about;
-  })
-}
-
-//устанавливаю данные профиля, полученные с сервера
-renderUser();
 
 //создаю экземпляр класса Section
 const section = new Section({
@@ -102,8 +114,9 @@ const photoZoomPopup = new PopupWithImage('.popup_type_photo-zoom');
 //создаю экземпляр класса PopupWithForm для попапа добавления карточки
 const photoAddPopup = new PopupWithForm({
   popupSelector: '.popup_type_add-photo',
-  handleFormSubmit: (data) => {
-    section.addNewItem(createCard(data));
+  handleFormSubmit: async (data) => {
+    const newCard =  await api.postNewCard(data);
+    section.addNewItem(createCard(newCard));
     photoAddPopup.close()}});
 
 //создаю экземпляр класса PopupWithForm для попапа профиля
@@ -118,8 +131,8 @@ const userEditPopup = new PopupWithForm({
 //создаю экземпляр класса PopupWithForm для попапа редактирования аватара
 const avatarUpdatePopup = new PopupWithForm({
   popupSelector: '.popup_type_update-avatar',
-  handleFormSubmit: (data) => {
-    api.patchAvatar(data);
+  handleFormSubmit: async (data) => {
+    await api.patchAvatar(data);
     renderUser();
     avatarUpdatePopup.close()}});
 
@@ -129,6 +142,22 @@ const avatarUpdatePopup = new PopupWithForm({
 function handleCardClick(link, name) {
   //вызываю метод open класса PopupWithImage (открываю попап)
   photoZoomPopup.open(link, name);
+};
+
+/**
+* функция обработки клика по лайку (поставить лайк)
+*/
+async function handleLikeClick(data) {
+  const newCardData =  await api.putLike(data);
+  return newCardData;
+};
+
+/**
+* функция обработки клика по лайку (удалить лайк)
+*/
+async function handleDeleteLikeClick(data) {
+  const newCardData =  await api.deleteLike(data);
+  return newCardData;
 };
 
 /**
