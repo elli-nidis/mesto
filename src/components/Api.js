@@ -1,21 +1,20 @@
 class Api {
   constructor(config) {
-    this.baseUrl = config.baseUrl;
-    this.token = config.headers.authorization;
-    this.contentType = config.headers['Content-Type'];
+    this._baseUrl = config.baseUrl;
+    this._token = config.headers.authorization;
+    this._contentType = config.headers['Content-Type'];
   }
 
   //запрашиваю на сервере начальные карточки, получаю массив с объектами
   getInitialCards() {
-    return fetch(`${this.baseUrl}/cards`, {
+    return fetch(`${this._baseUrl}/cards`, {
       headers: {
-        authorization: this.token,
-        'Content-Type': this.contentType
+        authorization: this._token,
+        'Content-Type': this._contentType
       }
     })
     .then(res => {
       if (res.ok) {
-        //console.log(res.json());
         return res.json();
       }
       //если ошибка, отклоняю промисс
@@ -25,30 +24,27 @@ class Api {
 
   //запрашиваю на сервере данные пользователя, получаю объект
   getUser() {
-    return fetch(`${this.baseUrl}/users/me`, {
+    return fetch(`${this._baseUrl}/users/me`, {
       headers: {
-        authorization: this.token,
-        'Content-Type': this.contentType
+        authorization: this._token,
+        'Content-Type': this._contentType
       }
     })
     .then(res => {
       if (res.ok) {
-        //console.log(res.json());
         return res.json();
       }
-      //если ошибка, отклоняю промисс
       return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
 
   //меняю данные пользователя на сервере
   patchUser(data) {
-    console.log('делаю апи патч юзер с параметрами: ' + data.userName + data.userOccupation);
-    return fetch(`${this.baseUrl}/users/me`, {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: {
-        authorization: this.token,
-        'Content-Type': this.contentType
+        authorization: this._token,
+        'Content-Type': this._contentType
       },
       body: JSON.stringify({
         name: data.userName,
@@ -57,22 +53,19 @@ class Api {
     })
     .then(res => {
       if (res.ok) {
-        //console.log(res.json());
         return res.json();
       }
-      //если ошибка, отклоняю промисс
       return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
 
   //меняю аватар на сервере
   patchAvatar(data) {
-    console.log('делаю апи патч аватар');
-    return fetch(`${this.baseUrl}/users/me/avatar`, {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: {
-        authorization: this.token,
-        'Content-Type': this.contentType
+        authorization: this._token,
+        'Content-Type': this._contentType
       },
       body: JSON.stringify({
         avatar: data.avatarLink,
@@ -80,22 +73,19 @@ class Api {
     })
     .then(res => {
       if (res.ok) {
-        //console.log(res.json());
         return res.json();
       }
-      //если ошибка, отклоняю промисс
       return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
 
    //отправляю новую карточку на сервер
    postNewCard(data) {
-    console.log('делаю апи пост кард');
-    return fetch(`${this.baseUrl}/cards`, {
+    return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
       headers: {
-        authorization: this.token,
-        'Content-Type': this.contentType
+        authorization: this._token,
+        'Content-Type': this._contentType
       },
       body: JSON.stringify({
         name: data.photoName,
@@ -104,53 +94,63 @@ class Api {
     })
     .then(res => {
       if (res.ok) {
-        //console.log(res.json());
         return res.json();
       }
-      //если ошибка, отклоняю промисс
       return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
 
   // отправляю лайк на сервер
    putLike(idCard) {
-    return fetch(`${this.baseUrl}/cards/${idCard}/likes`, {
+    return fetch(`${this._baseUrl}/cards/${idCard}/likes`, {
       method: 'PUT',
       headers: {
-        authorization: this.token,
-        'Content-Type': this.contentType
+        authorization: this._token,
+        'Content-Type': this._contentType
       },
     })
     .then(res => {
       if (res.ok) {
-        //console.log(res.json());
         return res.json();
       }
-      //если ошибка, отклоняю промисс
       return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
 
   // удаляю лайк с сервера
   deleteLike(idCard) {
-    return fetch(`${this.baseUrl}/cards/${idCard}/likes`, {
+    return fetch(`${this._baseUrl}/cards/${idCard}/likes`, {
       method: 'DELETE',
       headers: {
-        authorization: this.token,
-        'Content-Type': this.contentType
+        authorization: this._token,
+        'Content-Type': this._contentType
       },
     })
     .then(res => {
       if (res.ok) {
-        //console.log(res.json());
         return res.json();
       }
-      //если ошибка, отклоняю промисс
       return Promise.reject(`Ошибка: ${res.status}`);
     });
   }
 
-  // другие методы работы с API
+   // удаляю карточку с сервера
+   deleteCard(idCard) {
+    return fetch(`${this._baseUrl}/cards/${idCard}`, {
+      method: 'DELETE',
+      headers: {
+        authorization: this._token,
+        'Content-Type': this._contentType
+      },
+    })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
+  }
+
 }
 
 export {Api};

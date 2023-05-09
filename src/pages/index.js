@@ -4,6 +4,7 @@ import {FormValidator} from '../components/FormValidator.js';
 import {Section} from '../components/Section.js';
 import { PopupWithImage } from '../components/PopupWithImage.js';
 import { PopupWithForm } from '../components/PopupWithForm.js';
+import { PopupWithSubmit } from '../components/PopupWithSubmit.js';
 import { UserInfo } from '../components/UserInfo.js';
 import { Api } from '../components/Api.js';
 import './index.css';
@@ -32,14 +33,13 @@ const avatarUpdatePopupFormValidator = new FormValidator(validationConfig, '[nam
 const userName = document.querySelector('.popup__input_type_user-name');
 const userOccupation = document.querySelector('.popup__input_type_user-occupation');
 
+//задаю начальное значение для идентификатора пользователя
 let userId = undefined;
 
 //запускаю валидацию для каждой формы
 userEditPopupFormValidator.enableValidation();
 photoAddPopupFormValidator.enableValidation();
 avatarUpdatePopupFormValidator.enableValidation();
-
-
 
 //создаю экземпляр класса Api
 const api = new Api({
@@ -49,12 +49,6 @@ const api = new Api({
     'Content-Type': 'application/json'
   }
 }); 
-
-
-async function getUserId() {
-  const user = await api.getUser().then(data => {return data});
-   return user;
-}
 
 /**
 * функция устанавливает данные пользователя при загрузке страницы
@@ -73,11 +67,12 @@ function renderUser(){
 renderUser();
 
 
+
 /**
 * функция создания карточки
 */
 function createCard(data) {
-  const card = new Card(data, templateCard, handleCardClick, handleLikeClick, handleDeleteLikeClick, userId);
+  const card = new Card(data, templateCard, handleCardClick, handleLikeClick, handleDeleteLikeClick, userId, handleDeleteCard);
   const cardElement = card.createCard();
   return cardElement
 }
@@ -89,7 +84,6 @@ function renderCard(cardData) {
   const cardElement = createCard(cardData)
   section.addItem(cardElement);
 }
-
 
 //создаю экземпляр класса Section
 const section = new Section({
@@ -123,7 +117,6 @@ const photoAddPopup = new PopupWithForm({
 const userEditPopup = new PopupWithForm({
   popupSelector: '.popup_type_edit-profile',
   handleFormSubmit: (data) => {
-    //userInfo.setUserInfo(data);
     api.patchUser(data);
     renderUser();
     userEditPopup.close()}});
@@ -136,11 +129,34 @@ const avatarUpdatePopup = new PopupWithForm({
     renderUser();
     avatarUpdatePopup.close()}});
 
+
+
+//создаю экземпляр класса PopupWithSubmit для попапа удаления карточки
+const cardDeletePopup = new PopupWithSubmit({popupSelector: '.popup_type_delete-photo'});
+
+
+/**
+* функция обработки клика на корзину
+*/
+function handleDeleteCard(card) {
+  console.log('вошел в ф-цию удаления. Id card = ');
+  
+  //определяю поведение при "сабмите"
+  const handleSubmit =  async () => {
+    await api.deleteCard(card.idCard);
+    card.deleteCard();
+    cardDeletePopup.close();
+  };
+
+  cardDeletePopup.setSubmitAction(handleSubmit);
+  cardDeletePopup.open();
+};
+
+
 /**
 * функция обработки клика по карточке
 */
 function handleCardClick(link, name) {
-  //вызываю метод open класса PopupWithImage (открываю попап)
   photoZoomPopup.open(link, name);
 };
 
@@ -160,6 +176,7 @@ async function handleDeleteLikeClick(data) {
   return newCardData;
 };
 
+
 /**
 * функция установки данных юзера в попапе редактирования профиля при открытии
 */
@@ -170,23 +187,16 @@ function setUserData() {
   userOccupation.value = userData.userOccupation;
 };
 
-
-
 //добавляю слушателей на кнопки открытия попапов
 profileEditButton.addEventListener('click', () => {
-  //устанавливаю данные
   setUserData();
-
-  //открываю попап
   userEditPopup.open();
-
   //вызываю функцию очистки формы от ошибок валидации
   userEditPopupFormValidator.resetValidation();
 });
 
 profileAddButton.addEventListener('click', () => {
   photoAddPopup.open();
-  //вызываю функцию очистки формы от ошибок валидации
   photoAddPopupFormValidator.resetValidation();
 });
 
