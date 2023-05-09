@@ -5,11 +5,9 @@
   object-fit: cover;
   position: relative;
   visibility: visible;
-  z-index: 1;
 }
 
 .profile__avatar:hover {
-  z-index: 0;
   visibility: hidden;
 }
 

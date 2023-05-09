@@ -36,7 +36,6 @@ class Card {
   //метод deleteCard удаляет карточку
   deleteCard() {
     this.cardElement.remove();
-    //return this.idCard;
   }
 
   //метод _setEventListeners устанавливает слушателей на лайк, корзину (если она есть) и картинку

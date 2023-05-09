@@ -60,7 +60,10 @@ function renderUser(){
       profileUserName.textContent = data.name;
       profileUserOccupation.textContent = data.about;
       userId = data._id;
-  })
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 //устанавливаю данные профиля, полученные с сервера
@@ -88,7 +91,7 @@ function renderCard(cardData) {
 //создаю экземпляр класса Section
 const section = new Section({
   // items: initialCards,
-  items: api.getInitialCards(),
+  items: api.getInitialCards().catch((err) => {console.log(err)}),
   renderer: renderCard,
 }, '.photo-grid'
 );
@@ -109,7 +112,14 @@ const photoZoomPopup = new PopupWithImage('.popup_type_photo-zoom');
 const photoAddPopup = new PopupWithForm({
   popupSelector: '.popup_type_add-photo',
   handleFormSubmit: async (data) => {
-    const newCard =  await api.postNewCard(data);
+    renderLoading(true, photoAddPopup.submitButton);
+    const newCard =  await api.postNewCard(data)
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        renderLoading(false, photoAddPopup.submitButton);
+      });
     section.addNewItem(createCard(newCard));
     photoAddPopup.close()}});
 
@@ -117,7 +127,14 @@ const photoAddPopup = new PopupWithForm({
 const userEditPopup = new PopupWithForm({
   popupSelector: '.popup_type_edit-profile',
   handleFormSubmit: (data) => {
-    api.patchUser(data);
+    renderLoading(true, userEditPopup.submitButton);
+    api.patchUser(data)
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        renderLoading(false, userEditPopup.submitButton);
+      });
     renderUser();
     userEditPopup.close()}});
 
@@ -125,7 +142,14 @@ const userEditPopup = new PopupWithForm({
 const avatarUpdatePopup = new PopupWithForm({
   popupSelector: '.popup_type_update-avatar',
   handleFormSubmit: async (data) => {
-    await api.patchAvatar(data);
+    renderLoading(true, avatarUpdatePopup.submitButton);
+    await api.patchAvatar(data)
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        renderLoading(false, avatarUpdatePopup.submitButton);
+      });
     renderUser();
     avatarUpdatePopup.close()}});
 
@@ -138,12 +162,13 @@ const cardDeletePopup = new PopupWithSubmit({popupSelector: '.popup_type_delete-
 /**
 * функция обработки клика на корзину
 */
-function handleDeleteCard(card) {
-  console.log('вошел в ф-цию удаления. Id card = ');
-  
+function handleDeleteCard(card) { 
   //определяю поведение при "сабмите"
   const handleSubmit =  async () => {
-    await api.deleteCard(card.idCard);
+    await api.deleteCard(card.idCard)
+      .catch((err) => {
+        console.log(err);
+      });
     card.deleteCard();
     cardDeletePopup.close();
   };
@@ -164,7 +189,7 @@ function handleCardClick(link, name) {
 * функция обработки клика по лайку (поставить лайк)
 */
 async function handleLikeClick(data) {
-  const newCardData =  await api.putLike(data);
+  const newCardData =  await api.putLike(data).catch((err) => {console.log(err)});
   return newCardData;
 };
 
@@ -172,7 +197,7 @@ async function handleLikeClick(data) {
 * функция обработки клика по лайку (удалить лайк)
 */
 async function handleDeleteLikeClick(data) {
-  const newCardData =  await api.deleteLike(data);
+  const newCardData =  await api.deleteLike(data).catch((err) => {console.log(err)});
   return newCardData;
 };
 
@@ -186,6 +211,20 @@ function setUserData() {
   userName.value = userData.userName;
   userOccupation.value = userData.userOccupation;
 };
+
+/**
+* функция прелоадера "Сохранение..."
+*/
+function renderLoading(isLoading, button) {
+  if(isLoading) {
+    button.textContent = 'Сохранение...';
+  }
+  else {
+    button.closest('.popup').classList.contains('popup_type_add-photo')
+    ? button.textContent = 'Создать'
+    : button.textContent = 'Сохранить';
+  }
+}
 
 //добавляю слушателей на кнопки открытия попапов
 profileEditButton.addEventListener('click', () => {

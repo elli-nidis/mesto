@@ -63,7 +63,6 @@ class Popup {
 
   //метод close закрывает попап
   close() {
-    //console.log('работает close');
     this._popupElement.classList.remove('popup_opened');
 
     //удаляю слушателей с крестика, esc, оверлея

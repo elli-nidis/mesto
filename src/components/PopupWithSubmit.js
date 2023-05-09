@@ -8,7 +8,6 @@ class PopupWithSubmit extends Popup {
 
   //метод выбора действия по сабмиту - выношу из класса
   setSubmitAction(action) {
-    console.log('устанавливаю action');
     this._handleSubmit = action;
   }
 

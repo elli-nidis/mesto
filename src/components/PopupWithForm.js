@@ -5,6 +5,7 @@ class PopupWithForm extends Popup {
     super(popupSelector);
     this._handleFormSubmit = handleFormSubmit;
     this._form = this._popupElement.querySelector('.popup__form');
+    this.submitButton = this._form.querySelector('.popup__button');
     this._handlerFormSubmit = (evt) => {
       evt.preventDefault();
       this._handleFormSubmit(this._getInputValues())
@@ -16,7 +17,6 @@ class PopupWithForm extends Popup {
     this._inputList = Array.from(this._form.querySelectorAll('.popup__input'));
     const inputs = {};
     this._inputList.forEach(input => inputs[input.name] = input.value);
-    // console.log({inputs});
 
     //возвращаю объект
     return inputs;

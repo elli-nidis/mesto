@@ -10,13 +10,11 @@
   top: 0;
   left: 0;
   opacity: 0;
-  z-index: 0;
   transition: opacity .5s;
 }
 
 .profile__edit-avatar:hover {
   cursor: pointer;
-  z-index: 1;
   opacity: .8;
 }
 

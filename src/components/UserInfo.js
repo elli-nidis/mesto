@@ -11,12 +11,6 @@ class UserInfo {
       userOccupation: this._userOccupation.textContent
     }
   }
-
-  //метод setUserInfo принимает новые данные пользователя и добавляет их на страницу
-  // setUserInfo({userName, userOccupation}) {
-  //   this._userName.textContent = userName;
-  //   this._userOccupation.textContent = userOccupation;
-  // }
 }
 
 export {UserInfo};
