@@ -41,7 +41,6 @@ class Card {
   //метод _setEventListeners устанавливает слушателей на лайк, корзину (если она есть) и картинку
   _setEventListeners() {
     this._buttonLike.addEventListener('click', () => this._likeCard());
-    // if (this._buttonDelete) this._buttonDelete.addEventListener('click', () => this._deleteCard());
     if (this._buttonDelete) this._buttonDelete.addEventListener('click', () => this._handleDeleteCard(this));
     this._photoImg.addEventListener('click', () => this._handleCardClick(this._link, this._name));
   }

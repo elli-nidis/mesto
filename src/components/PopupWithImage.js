@@ -11,7 +11,7 @@ class PopupWithImage extends Popup {
   open(link, name) {
     //устанавливаю значения для картинки
     this._photoZoomImg.src = link;
-    this._photoZoomTitle.alt = name;
+    this._photoZoomImg.alt = name;
     this._photoZoomTitle.textContent = name;
 
     //открываю попап через метод родителя

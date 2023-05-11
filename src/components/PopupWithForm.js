@@ -5,21 +5,37 @@ class PopupWithForm extends Popup {
     super(popupSelector);
     this._handleFormSubmit = handleFormSubmit;
     this._form = this._popupElement.querySelector('.popup__form');
-    this.submitButton = this._form.querySelector('.popup__button');
+    this._submitButton = this._form.querySelector('.popup__button');
+    this._submitButtonText = this._submitButton.textContent;
+    this._inputList = Array.from(this._form.querySelectorAll('.popup__input'));
     this._handlerFormSubmit = (evt) => {
       evt.preventDefault();
       this._handleFormSubmit(this._getInputValues())
     }
   }
 
+  //метод renderLoading устанавливает/снимает перлоадер на кнопку сабмит
+  renderLoading(isLoading, loadingText = 'Сохранение...') {
+    if(isLoading) {
+      this._submitButton.textContent = loadingText;
+    }
+    else {
+      this._submitButton.textContent = this._submitButtonText;
+    }
+  }
+
   //метод _getInputValues() собирает данные всех полей формы
   _getInputValues() {
-    this._inputList = Array.from(this._form.querySelectorAll('.popup__input'));
     const inputs = {};
     this._inputList.forEach(input => inputs[input.name] = input.value);
-
-    //возвращаю объект
     return inputs;
+  }
+
+  //метод setInputValues вставляет данные в инпуты формы
+  setInputValues(inputs) {
+    this._inputList.forEach((input) => {
+      input.value = inputs[input.name];
+    })
   }
 
   //метод setEventListeners перезаписывает родительский метод: добавляет обработчик сабмита формы

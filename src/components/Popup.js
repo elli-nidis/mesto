@@ -31,9 +31,6 @@ class Popup {
 
   //метод setEventListeners устанавливает слушателей
   setEventListeners() {
-    //устанавливаю слушателя на esc
-    document.addEventListener('keydown', this._handleEscClose);
-
     //устанавливаю слушателя на крестик
     this._closeButton.addEventListener('click', this._handleCloseButton);
 
@@ -41,32 +38,20 @@ class Popup {
     this._popupElement.addEventListener('click', this._handleOverlayClose);
   }
 
-  //метод removeEventListeners удаляет слушателей
-  _removeEventListeners() {
-    //удаляю слушателя с esc
-    document.removeEventListener('keydown', this._handleEscClose);
-
-    //удаляю слушателя с крестика
-    this._closeButton.removeEventListener('click', this._handleCloseButton);
-
-    //удаляю слушателя с оверлея
-    this._popupElement.removeEventListener('click', this._handleOverlayClose);
-  }
-
   //метод open открывает попап
   open() {
     this._popupElement.classList.add('popup_opened');
 
-    //устанавливаю слушателей: крестик, esc, оверлей
-    this.setEventListeners();
+     //устанавливаю слушателя на esc
+     document.addEventListener('keydown', this._handleEscClose);                            
   }
 
   //метод close закрывает попап
   close() {
     this._popupElement.classList.remove('popup_opened');
 
-    //удаляю слушателей с крестика, esc, оверлея
-    this._removeEventListeners();
+    //удаляю слушателя с esc
+    document.removeEventListener('keydown', this._handleEscClose);
   }
   
 }

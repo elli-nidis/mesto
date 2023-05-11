@@ -14,11 +14,11 @@ class PopupWithSubmit extends Popup {
   //метод setEventListeners перезаписывает родительский метод: добавляет обработчик "сабмита"
   setEventListeners() {
     super.setEventListeners();
-    this._buttonSubmit.addEventListener('click', evt =>{
+    this._buttonSubmit.addEventListener('click', evt => {
       evt.preventDefault();
       this._handleSubmit();
     });
-    }
-    }
+  }
+}
 
 export {PopupWithSubmit};

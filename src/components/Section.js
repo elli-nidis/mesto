@@ -1,28 +1,24 @@
 class Section {
-  constructor({items, renderer}, containerSelector) {
-    this._items = items;
+  constructor({renderer}, containerSelector) {
     this._renderer = renderer;
-    this._containerSelector = document.querySelector(containerSelector);
+    this._container = document.querySelector(containerSelector);
   }
 
   //метод renderItems перебирает массив с начальными карточками и отрисовывает их
-  renderItems() {
-    //перебираю массив с начальными карточками (тяну с сервера)
-    this._items
-    .then(items => items.forEach(item => {
-      //отрисовываю карточку на странице
-      this._renderer(item);
-    }))
-}
+  renderItems(cards) {
+    cards.forEach((card) => {
+      this._renderer(card)
+    })
+  }
 
-//метод addItem вставляет карточку в конец контейнера
+  //метод addItem вставляет карточку в конец контейнера
   addItem(item) {
-    this._containerSelector.append(item);
+    this._container.append(item);
   }
 
   //метод addNewItem вставляет новую карточку в начало контейнера
   addNewItem(item) {
-    this._containerSelector.prepend(item);
+    this._container.prepend(item);
   }
 }
 
